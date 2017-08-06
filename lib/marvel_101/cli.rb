@@ -5,7 +5,7 @@ class Marvel101::CLI
     main_menu
   end
 
-  def list_main_options
+  def main_menu
     puts "Here are your primary options:"
     puts "1. Popular Teams!"
     puts "2. Popular Heroes!"
@@ -13,18 +13,14 @@ class Marvel101::CLI
     puts "4. Marvel's Currently Featured!"
     puts "5. Women of Marvel!"
     puts "6. Exit Marvel 101"
-  end
-
-  def main_menu
-    list_main_options
     puts "Select a number from the options above and we'll get started!"
     input = gets.chomp.to_i
     case input
-    when 1 then detail_menu("teams")
-    when 2 then detail_menu("heroes")
-    when 3 then detail_menu("villains")
-    when 4 then detail_menu("featured")
-    when 5 then detail_menu("women")
+    when 1 then list_menu("teams")
+    when 2 then list_menu("heroes")
+    when 3 then list_menu("villains")
+    when 4 then list_menu("featured")
+    when 5 then list_menu("women")
     when 6 then puts "Sure thing, have a super day! (haha super... get it?)"
     else
       puts "Yeah... that's not an option. Let's try that again."
@@ -32,8 +28,21 @@ class Marvel101::CLI
     end
   end
 
-  def detail_menu(topic)
-    puts "cool you selected #{topic}"
+  def list_menu(topic)
+    puts "cool you selected #{topic}. Right now this is a stub though and I don't care!"
+    puts "Here are Marvel's popular teams! (Sorry if your favorite didn't make the cut)"
+    puts "1. Avengers"
+    puts "2. X-Men"
+    puts "3. Guardians of the Galaxy"
+    puts "Select a number from the options above to learn more!"
   end
+
+  def display_team()
+  end
+
+  def display_character()
+  end
+
+
 
 end
