@@ -9,11 +9,9 @@ class Marvel101::Category
   end
 
   def add_topics
-    @topics << Marvel101::Team.new("Avengers")
-    @topics << Marvel101::Team.new("X-Men")
-    @topics << Marvel101::Team.new("Guardians of the Galaxy")
-    @topics << Marvel101::Team.new("Fantastic Four")
-    @topics << Marvel101::Team.new("Defenders")
+    @topics << Marvel101::Team.new("Avengers", ["Thor", "Hulk", "Iron Man", "Captain America"], "THE super team", "Avengers HQ")
+    @topics << Marvel101::Team.new("X-Men", ["Wolverine", "Cyclops", "Jean Gray"], "Vast team of gifted mutants", "Xavier's Academy")
+    @topics << Marvel101::Team.new("Guardians of the Galaxy", ["Groot", "Star Lord", "Drax"], "Intergalactic band of misfits", "The universe")
     @topics
   end
 
