@@ -14,6 +14,7 @@ class Marvel101::Category
     @topics << Marvel101::Team.new("Guardians of the Galaxy")
     @topics << Marvel101::Team.new("Fantastic Four")
     @topics << Marvel101::Team.new("Defenders")
+    @topics
   end
 
 end
