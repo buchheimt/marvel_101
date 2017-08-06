@@ -29,14 +29,15 @@ class Marvel101::CLI
   end
 
   def list_menu(topic)
-    avengers = Marvel101::Team.new("Avengers")
-    x_men = Marvel101::Team.new("X-Men")
-    gog = Marvel101::Team.new("Guardians of the Galaxy")
+    teams = []
+    teams << Marvel101::Team.new("Avengers")
+    teams << Marvel101::Team.new("X-Men")
+    teams << Marvel101::Team.new("Guardians of the Galaxy")
+    teams << Marvel101::Team.new("Fantastic Four")
+    teams << Marvel101::Team.new("Defenders")
     puts "cool you selected #{topic}. Right now this is a stub though and I don't care!"
     puts "Here are Marvel's popular teams! (Sorry if your favorite didn't make the cut)"
-    puts "1. #{avengers.name}"
-    puts "2. #{x_men.name}"
-    puts "3. #{gog.name}"
+    teams.each.with_index(1) {|team, index| puts "#{index}. #{team.name}"}
     puts "Select a number from the options above to learn more!"
     input = gets.chomp.to_i
     display_team(input)
