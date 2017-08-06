@@ -48,14 +48,12 @@ class Marvel101::CLI
     puts "Description: #{team.description}"
     puts "Location: #{team.location}"
     puts "Select a number from the options above to learn more!"
-    input = gets.chomp.to_i
-    display_character("thor")
+    input = gets.chomp.to_i - 1
+    display_character(team.members[input])
   end
 
   def display_character(character)
-    puts "Hi I'm thor! (You definitely selected this)"
-    puts "I have a cool hammer"
-    puts "I'm from asgard, etc etc"
+    puts "Hi I'm #{character}!"
   end
 
 end
