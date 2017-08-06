@@ -41,15 +41,12 @@ class Marvel101::CLI
 
   def display_team(team)
     puts "So you definitely selected the #{team.name}, cool."
-    puts "Here is some more info about the Avengers!"
-    puts "-" * 20
-    puts "location: Avengers HQ"
-    puts "Big foes: Thanos, Ultron"
-    puts "Core Avengers members:"
-    puts "1. Thor"
-    puts "2. Hulk"
-    puts "3. Iron Man"
-    puts "4. Captain America"
+    puts "Here is some more info about the #{team.name}!"
+    puts "-" * 15 + "The #{team.name}" + "-" * 15
+    puts "Core Members: "
+    team.members.each.with_index(1) {|member, index| puts "    #{index}. #{member}"}
+    puts "Description: #{team.description}"
+    puts "Location: #{team.location}"
     puts "Select a number from the options above to learn more!"
     input = gets.chomp.to_i
     display_character("thor")
