@@ -1,5 +1,2 @@
 require "marvel_101/version"
-
-module Marvel101
-
-end
+require "marvel_101/cli"
