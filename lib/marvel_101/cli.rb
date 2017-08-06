@@ -35,12 +35,28 @@ class Marvel101::CLI
     puts "2. X-Men"
     puts "3. Guardians of the Galaxy"
     puts "Select a number from the options above to learn more!"
+    input = gets.chomp.to_i
+    display_team(input)
   end
 
-  def display_team()
+  def display_team(team)
+    puts "So you definitely selected number #{team}, cool."
+    puts "Here is some more info about the Avengers!"
+    puts "-" * 20
+    puts "location: Avengers HQ"
+    puts "Big foes: Thanos, Ultron"
+    puts "Core Avengers members:"
+    puts "1. Thor"
+    puts "2. Hulk"
+    puts "3. Iron Man"
+    puts "4. Captain America"
+    puts "Select a number from the options above to learn more!"
+    input = gets.chomp.to_i
+    display_character("thor")
   end
 
-  def display_character()
+  def display_character(character)
+    puts "Hi I'm thor! (You definitely selected this)"
   end
 
 
