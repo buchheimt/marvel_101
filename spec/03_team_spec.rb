@@ -10,7 +10,7 @@ RSpec.describe "Marvel101::Team" do
 
     it "Initializes a Team with an array of members"  do
       new_team = Marvel101::Team.new("Avengers", ["Thor", "Hulk", "Iron Man", "Captain America"], "THE super team", "Avengers HQ")
-      expect(new_team.members).to eq(["Thor", "Hulk", "Iron Man", "Captain America"])
+      expect(new_team.members[0].name).to eq("Thor")
     end
 
     it "Initializes a Team with a description"  do

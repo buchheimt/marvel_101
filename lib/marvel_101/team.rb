@@ -4,9 +4,10 @@ class Marvel101::Team
 
   def initialize(name, members, description, location)
     @name = name
-    @members = members
+    @members = []
     @description = description
     @location = location
+    members.each {|char| @members << Marvel101::Character.new(char)}
   end
 
 end

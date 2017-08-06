@@ -44,7 +44,7 @@ class Marvel101::CLI
     puts "Here is some more info about the #{team.name}!"
     puts "-" * 15 + "The #{team.name}" + "-" * 15
     puts "Core Members: "
-    team.members.each.with_index(1) {|member, index| puts "    #{index}. #{member}"}
+    team.members.each.with_index(1) {|member, index| puts "    #{index}. #{member.name}"}
     puts "Description: #{team.description}"
     puts "Location: #{team.location}"
     puts "Select a number from the options above to learn more!"
@@ -53,7 +53,7 @@ class Marvel101::CLI
   end
 
   def display_character(character)
-    puts "Hi I'm #{character}!"
+    puts "Hi I'm #{character.name}!"
   end
 
 end
