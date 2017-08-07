@@ -110,6 +110,8 @@ class Marvel101::CLI
 
   def display_character(character, category, team)
     puts "\nHi I'm #{character.name}!"
+    puts "description: #{character.description}" if character.description
+    puts "powers: #{character.powers}" if character.powers
     puts "You can enter 'main' to go back to the main menu or 'exit' to... exit"
     puts "you can also type 'category' to return to the list of #{category.name}."
     puts "you can also type 'team' to return to the list of #{team.name}." if team
