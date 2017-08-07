@@ -29,9 +29,8 @@ class Marvel101::CLI
   end
 
   def list_menu(category)
-    display_category = Marvel101::Category.new(category, "Teams url")
-    display_category.add_topics
-    puts "cool you selected #{display_category.name}. Right now this is a stub though and I don't care!"
+    display_category = Marvel101::Category.new("Teams", "Teams url")
+    puts "Cool you selected #{display_category.name}. Right now this is a stub though and I don't care!"
     puts "Here are Marvel's popular teams! (Sorry if your favorite didn't make the cut)"
     display_category.topics.each.with_index(1) {|team, index| puts "#{index}. #{team.name}"}
     puts "Select a number from the options above to learn more!"
