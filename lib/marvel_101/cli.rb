@@ -16,11 +16,11 @@ class Marvel101::CLI
     puts "Select a number from the options above and we'll get started!"
     input = gets.chomp.to_i
     case input
-    when 1 then list_menu("Popular Teams")
-    when 2 then list_menu("Popular Heroes")
-    when 3 then list_menu("Popular Villains")
-    when 4 then list_menu("Featured Characters")
-    when 5 then list_menu("Women of Marvel")
+    when 1 then category_menu("Popular Teams")
+    when 2 then category_menu("Popular Heroes")
+    when 3 then category_menu("Popular Villains")
+    when 4 then category_menu("Featured Characters")
+    when 5 then category_menu("Women of Marvel")
     when 6 then puts "Sure thing, have a super day! (haha super... get it?)"
     else
       puts "Yeah... that's not an option. Let's try that again."
@@ -28,7 +28,7 @@ class Marvel101::CLI
     end
   end
 
-  def list_menu(category)
+  def category_menu(category)
     display_category = Marvel101::Category.new("#{category}", "#{category} url")
     puts "#{display_category.name}? Nice pick!"
     puts "Here is a list of #{category}! (Sorry if your favorite didn't make the cut)"
@@ -36,13 +36,13 @@ class Marvel101::CLI
     puts "Select a number from the options above to learn more!"
     input = gets.chomp.to_i - 1
     if category == "Popular Teams"
-      display_team(display_category.topics[input])
+      team_menu(display_category.topics[input])
     else
-      display_character(display_category.topics[input])
+      character_menu(display_category.topics[input])
     end
   end
 
-  def display_team(team)
+  def team_menu(team)
     puts "So you definitely selected the #{team.name}, cool."
     puts "Here is some more info about the #{team.name}!"
     puts "-" * 15 + "The #{team.name}" + "-" * 15
@@ -52,10 +52,10 @@ class Marvel101::CLI
     puts "Location: #{team.location}"
     puts "Select a number from the options above to learn more!"
     input = gets.chomp.to_i - 1
-    display_character(team.members[input])
+    character_menu(team.members[input])
   end
 
-  def display_character(character)
+  def character_menu(character)
     puts "Hi I'm #{character.name}!"
   end
 
