@@ -10,9 +10,9 @@ class Marvel101::Scraper
     topics = []
     case url
     when "Popular Teams url"
-      topics << Marvel101::Team.new("Avengers", ["Thor", "The Hulk", "Iron Man", "Captain America"], "THE super team", "Avengers HQ")
-      topics << Marvel101::Team.new("X-Men", ["Wolverine", "Cyclops", "Jean Gray"], "Vast team of gifted mutants", "Xavier's Academy")
-      topics << Marvel101::Team.new("Guardians of the Galaxy", ["Groot", "Star Lord", "Drax"], "Intergalactic band of misfits", "The universe")
+      topics << Marvel101::Team.new("Avengers", "Avengers url")
+      topics << Marvel101::Team.new("X-Men", "X-Men url")
+      topics << Marvel101::Team.new("Guardians of the Galaxy", "Guardians of the Galaxy url")
     when "Popular Heroes url"
       topics << Marvel101::Character.new("Thor", "Thor url")
       topics << Marvel101::Character.new("Spider-Man", "Spider-Man url")
@@ -35,6 +35,26 @@ class Marvel101::Scraper
       topics << Marvel101::Character.new("She-Hulk", "She-Hulk url")
     end
     topics
+  end
+
+  def scrape_team
+    case url
+    when "Avengers url"
+      members = []
+      member_names = ["Thor", "The Hulk", "Iron Man", "Captain America"]
+      member_names.each {|char| members << Marvel101::Character.new(char, "#{char} url")}
+      {members: members, description: "THE super team", location: "Avengers HQ"}
+    when "X-Men url"
+      members = []
+      member_names = ["Wolverine", "Cyclops", "Jean Gray"]
+      member_names.each {|char| members << Marvel101::Character.new(char, "#{char} url")}
+      {members: members, description: "Vast team of gifted mutants", location: "Xavier's Academy"}
+    when "Guardians of the Galaxy url"
+      members = []
+      member_names = ["Groot", "Star Lord", "Drax"]
+      member_names.each {|char| members << Marvel101::Character.new(char, "#{char} url")}
+      {members: members, description: "Intergalactic band of misfits", location: "The universe"}
+    end
   end
 
   def scrape_character

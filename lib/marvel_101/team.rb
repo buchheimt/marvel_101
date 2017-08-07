@@ -2,12 +2,11 @@ class Marvel101::Team
 
   attr_accessor :name, :members, :description, :location
 
-  def initialize(name, members, description, location)
+  def initialize(name, url)
     @name = name
-    @members = []
-    @description = description
-    @location = location
-    members.each {|char| @members << Marvel101::Character.new(char, "#{char} url")}
+    @url = url
+    attributes, member_names = Marvel101::Scraper.new(url).scrape_team
+    attributes.each {|key, value| self.send("#{key}=", value)}
   end
 
 end
