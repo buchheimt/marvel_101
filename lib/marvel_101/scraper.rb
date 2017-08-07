@@ -38,7 +38,16 @@ class Marvel101::Scraper
   end
 
   def scrape_character
-
+    case url
+    when "Thor url"
+      {description: "God of Thunder", powers: "super hammer and strength etc."}
+    when "The Hulk url"
+      {description: "Angry big giant", powers: "super strength"}
+    when "Star Lord url"
+      {description: "GoG captain, son of ego", powers: "unclear"}
+    else
+      {}
+    end
   end
 
 end

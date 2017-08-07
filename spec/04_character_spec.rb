@@ -7,6 +7,11 @@ RSpec.describe "Marvel101::Character" do
       new_char = Marvel101::Character.new("Thor", "Thor url")
       expect(new_char.name).to eq("Thor")
     end
+
+    it "Initializes a Character with scraped attributes" do
+      new_char = Marvel101::Character.new("Thor", "Thor url")
+      expect(new_char.description).to eq("God of Thunder")
+    end
   end
 
 end
