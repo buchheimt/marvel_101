@@ -41,9 +41,9 @@ class Marvel101::CLI
     when "exit" then exit_message
     else
       if target_category.name == "Popular Teams"
-        team_menu(target_category.topics[input.to_i - 1])
+        team_menu(target_category.topics[input.to_i - 1], target_category)
       else
-        character_menu(target_category.topics[input.to_i - 1])
+        character_menu(target_category.topics[input.to_i - 1], target_category)
       end
     end
   end
@@ -56,17 +56,18 @@ class Marvel101::CLI
     puts "You can also enter 'main' to go back to the main menu or 'exit' to... exit"
   end
 
-  def team_menu(team)
-    display_team(team)
+  def team_menu(team, category)
+    display_team(team, category)
     input = gets.chomp
     case input.downcase
     when "main" then main_menu
     when "exit" then exit_message
-    else character_menu(team.members[input.to_i - 1])
+    when "category" then category_menu(category.name)
+    else character_menu(team.members[input.to_i - 1], category, team)
     end
   end
 
-  def display_team(team)
+  def display_team(team, category)
     puts "You selected the #{team.name}, awesome!"
     puts "Here is some more info about the #{team.name}."
     puts "-" * 15 + "The #{team.name}" + "-" * 15
@@ -76,20 +77,25 @@ class Marvel101::CLI
     puts "Location: #{team.location}"
     puts "Select a number from the options above to learn more!"
     puts "You can also enter 'main' to go back to the main menu or 'exit' to... exit"
+    puts "you can also type 'category' to return to the list of #{category.name}."
   end
 
-  def character_menu(character)
-    display_character(character)
+  def character_menu(character, category, team = nil)
+    display_character(character, category, team)
     input = gets.chomp
     case input.downcase
     when "main" then main_menu
+    when "category" then category_menu(category.name)
+    when "team" then team ? category_menu(team.name) : exit_message
     else exit_message
     end
   end
 
-  def display_character(character)
+  def display_character(character, category, team)
     puts "Hi I'm #{character.name}!"
     puts "You can enter 'main' to go back to the main menu or 'exit' to... exit"
+    puts "you can also type 'category' to return to the list of #{category.name}."
+    puts "you can also type 'team' to return to the list of #{team.name}." if team
   end
 
   def exit_message
