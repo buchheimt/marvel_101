@@ -13,64 +13,38 @@ class Marvel101::Scraper
     team_items.css("div.row-item-text > h5 > a").each do |link|
       name = link.text.strip
       url = link.attr("href")
-      if url.include?("team")
+      if @url.include?("team")
         topics << Marvel101::Team.find_or_create_by_name(name, url)
       else
-        topics << Marvel101::Character.new(name, url)
+        topics << Marvel101::Character.find_or_create_by_name(name, url)
       end
     end
     topics
   end
 
-  def scrape_category1
-    topics = []
-    case url
-    when "Popular Teams url"
-      topics << Marvel101::Team.find_or_create_by_name("Avengers", "Avengers url")
-      topics << Marvel101::Team.find_or_create_by_name("X-Men", "X-Men url")
-      topics << Marvel101::Team.find_or_create_by_name("Guardians of the Galaxy", "Guardians of the Galaxy url")
-    when "Popular Heroes url"
-      topics << Marvel101::Character.new("Thor", "Thor url")
-      topics << Marvel101::Character.new("Spider-Man", "Spider-Man url")
-      topics << Marvel101::Character.new("Iron Man", "Iron Man url")
-      topics << Marvel101::Character.new("The Hulk", "The Hulk url")
-    when "Popular Villains url"
-      topics << Marvel101::Character.new("Ultron", "Ultron url")
-      topics << Marvel101::Character.new("Thanos", "Thanos url")
-      topics << Marvel101::Character.new("Green Goblin", "Green Goblin url")
-      topics << Marvel101::Character.new("Loki", "Loki url")
-    when "Featured Characters url"
-      topics << Marvel101::Character.new("Black Panther", "Black Panther url")
-      topics << Marvel101::Character.new("Spider-Man", "Spider-Man url")
-      topics << Marvel101::Character.new("Luke Cage", "Luke Cage url")
-      topics << Marvel101::Character.new("Iron Fist", "Iron Fist url")
-    when "The Women of Marvel url"
-      topics << Marvel101::Character.new("Black Widow", "Black Widow url")
-      topics << Marvel101::Character.new("Storm", "Storm url")
-      topics << Marvel101::Character.new("Captain Marvel", "Captain Marvel url")
-      topics << Marvel101::Character.new("She-Hulk", "She-Hulk url")
-    end
-    topics
-  end
-
   def scrape_team
-    case url
-    when "Avengers url"
-      members = []
-      member_names = ["Thor", "The Hulk", "Iron Man", "Captain America"]
-      member_names.each {|char| members << Marvel101::Character.new(char, "#{char} url")}
-      {members: members, description: "THE super team", url_101: "Avengers 101 url"}
-    when "X-Men url"
-      members = []
-      member_names = ["Wolverine", "Cyclops", "Jean Gray"]
-      member_names.each {|char| members << Marvel101::Character.new(char, "#{char} url")}
-      {members: members, description: "Vast team of gifted mutants", url_101: "Avengers 101 url"}
-    when "Guardians of the Galaxy url"
-      members = []
-      member_names = ["Groot", "Star Lord", "Drax"]
-      member_names.each {|char| members << Marvel101::Character.new(char, "#{char} url")}
-      {members: members, description: "Intergalactic band of misfits"}
+    details = {}
+    doc = Nokogiri::HTML(open("http:#{url}"))
+
+    details[:description] = doc.css("div.featured-item-desc p:nth-child(2)").text.strip if doc.css("div.featured-item-desc p:nth-child(2)")
+
+    members = []
+    members_grid = doc.css("div.grid-container").first
+    members_grid.css("div.row-item").each do |card|
+      name = card.css("a.meta-title").text.strip
+      url = "http:#{card.css("a.meta-title").attr("href").value}"
+      members << Marvel101::Character.find_or_create_by_name(name, url)
     end
+    details[:members] = members
+    binding.pry
+    url_101_text = doc.css("div#MarvelVideo101 script").text
+    if url_101_text != ""
+      details[:url_101] = "https://www.youtube.com/watch?v=#{url_101_text.match(/videoId: .(\w*)./)[1]}"
+    end
+    if doc.css("div.title-section a.featured-item-notice.primary").size > 0
+      details[:url_wiki] = doc.css("div.title-section a.featured-item-notice.primary").attr("href").value
+    end
+    details
   end
 
   def scrape_character

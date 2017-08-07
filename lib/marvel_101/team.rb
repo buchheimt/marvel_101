@@ -13,7 +13,7 @@ class Marvel101::Team
   end
 
   def get_info
-    attributes= Marvel101::Scraper.new(@url).scrape_team
+    attributes = Marvel101::Scraper.new(@url).scrape_team
     attributes.each {|key, value| self.send("#{key}=", value)}
     @scraped = true
   end
