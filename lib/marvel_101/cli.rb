@@ -22,7 +22,7 @@ class Marvel101::CLI
   end
 
   def display_main
-    puts "Here are your primary options:"
+    puts "\nHere are your primary options:"
     puts "1. Popular Teams!"
     puts "2. Popular Heroes!"
     puts "3. Popular Villains!"
@@ -40,10 +40,15 @@ class Marvel101::CLI
     when "main" then main_menu
     when "exit" then exit_message
     else
-      if target_category.name == "Popular Teams"
-        team_menu(target_category.topics[input.to_i - 1], target_category)
+      if valid_input?(input, target_category.topics)
+        if target_category.name == "Popular Teams"
+          team_menu(target_category.topics[input.to_i - 1], target_category)
+        else
+          character_menu(target_category.topics[input.to_i - 1], target_category)
+        end
       else
-        character_menu(target_category.topics[input.to_i - 1], target_category)
+        puts "Sorry, that wasn't a valid option. Let's try again."
+        category_menu(category)
       end
     end
   end
@@ -68,7 +73,7 @@ class Marvel101::CLI
   end
 
   def display_team(team, category)
-    puts "You selected the #{team.name}, awesome!"
+    puts "\nYou selected the #{team.name}, awesome!"
     puts "Here is some more info about the #{team.name}."
     puts "-" * 15 + "The #{team.name}" + "-" * 15
     puts "Core Members: "
@@ -92,10 +97,14 @@ class Marvel101::CLI
   end
 
   def display_character(character, category, team)
-    puts "Hi I'm #{character.name}!"
+    puts "\nHi I'm #{character.name}!"
     puts "You can enter 'main' to go back to the main menu or 'exit' to... exit"
     puts "you can also type 'category' to return to the list of #{category.name}."
     puts "you can also type 'team' to return to the list of #{team.name}." if team
+  end
+
+  def valid_input?(input, options)
+    input.to_i.between?(1,options.size)
   end
 
   def exit_message
