@@ -9,11 +9,11 @@ class Marvel101::CLI
     display_main
     input = gets.chomp.to_i
     case input
-    when 1 then category_menu("Popular Teams", "url")
-    when 2 then category_menu("Popular Heroes", "url")
-    when 3 then category_menu("Popular Villains", "url")
-    when 4 then category_menu("Featured Characters", "url")
-    when 5 then category_menu("The Women of Marvel", "url")
+    when 1 then category_menu("Popular Teams", "http://marvel.com/characters/list/997/titanic_teams")
+    when 2 then category_menu("Popular Heroes", "http://marvel.com/characters/list/994/top_marvel_heroes")
+    when 3 then category_menu("Popular Villains", "http://marvel.com/characters/list/995/bring_on_the_bad_guys")
+    when 4 then category_menu("Featured Characters", "http://marvel.com/characters/browse")
+    when 5 then category_menu("The Women of Marvel", "http://marvel.com/characters/list/996/women_of_marvel")
     when 6 then exit_message
     else
       error_message
@@ -33,7 +33,7 @@ class Marvel101::CLI
   end
 
   def category_menu(category, url)
-    target_category = Marvel101::Category.find_or_create_by_name("#{category}", "#{category} url")
+    target_category = Marvel101::Category.find_or_create_by_name("#{category}", url)
     display_category(target_category)
     input = gets.chomp
     case input.downcase

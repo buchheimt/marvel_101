@@ -8,6 +8,22 @@ class Marvel101::Scraper
 
   def scrape_category
     topics = []
+    doc = Nokogiri::HTML(open(url))
+    team_items = doc.css("div#comicsListing div.row-item")
+    team_items.css("div.row-item-text > h5 > a").each do |link|
+      name = link.text.strip
+      url = link.attr("href")
+      if url.include?("team")
+        topics << Marvel101::Team.find_or_create_by_name(name, url)
+      else
+        topics << Marvel101::Character.new(name, url)
+      end
+    end
+    topics
+  end
+
+  def scrape_category1
+    topics = []
     case url
     when "Popular Teams url"
       topics << Marvel101::Team.find_or_create_by_name("Avengers", "Avengers url")
