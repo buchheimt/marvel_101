@@ -33,7 +33,7 @@ class Marvel101::CLI
   end
 
   def category_menu(category)
-    target_category = Marvel101::Category.new("#{category}", "#{category} url")
+    target_category = Marvel101::Category.find_or_create_by_name("#{category}", "#{category} url")
     display_category(target_category)
     input = gets.chomp
     case input.downcase
