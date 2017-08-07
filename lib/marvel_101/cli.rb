@@ -16,11 +16,11 @@ class Marvel101::CLI
     puts "Select a number from the options above and we'll get started!"
     input = gets.chomp.to_i
     case input
-    when 1 then list_menu("Teams")
-    when 2 then list_menu("heroes")
-    when 3 then list_menu("villains")
-    when 4 then list_menu("featured")
-    when 5 then list_menu("women")
+    when 1 then list_menu("Popular Teams")
+    when 2 then list_menu("Popular Heroes")
+    when 3 then list_menu("Popular Villains")
+    when 4 then list_menu("Featured Characters")
+    when 5 then list_menu("Women of Marvel")
     when 6 then puts "Sure thing, have a super day! (haha super... get it?)"
     else
       puts "Yeah... that's not an option. Let's try that again."
@@ -29,13 +29,17 @@ class Marvel101::CLI
   end
 
   def list_menu(category)
-    display_category = Marvel101::Category.new("Teams", "Teams url")
-    puts "Cool you selected #{display_category.name}. Right now this is a stub though and I don't care!"
-    puts "Here are Marvel's popular teams! (Sorry if your favorite didn't make the cut)"
-    display_category.topics.each.with_index(1) {|team, index| puts "#{index}. #{team.name}"}
+    display_category = Marvel101::Category.new("#{category}", "#{category} url")
+    puts "#{display_category.name}? Nice pick!"
+    puts "Here is a list of #{category}! (Sorry if your favorite didn't make the cut)"
+    display_category.topics.each.with_index(1) {|topic, index| puts "#{index}. #{topic.name}"}
     puts "Select a number from the options above to learn more!"
     input = gets.chomp.to_i - 1
-    display_team(display_category.topics[input])
+    if category == "Popular Teams"
+      display_team(display_category.topics[input])
+    else
+      display_character(display_category.topics[input])
+    end
   end
 
   def display_team(team)
