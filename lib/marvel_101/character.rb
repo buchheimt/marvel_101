@@ -5,8 +5,17 @@ class Marvel101::Character
   def initialize(name, url)
     @name = name
     @url = url
-    attributes = Marvel101::Scraper.new(url).scrape_character
+    @scraped = false
+  end
+
+  def get_info
+    attributes = Marvel101::Scraper.new(@url).scrape_character
     attributes.each {|key, value| self.send("#{key}=", value)}
+    @scraped = true
+  end
+
+  def scraped?
+    @scraped
   end
 
 end

@@ -62,6 +62,7 @@ class Marvel101::CLI
   end
 
   def team_menu(team, category)
+    team.get_info unless team.scraped?
     display_team(team, category)
     input = gets.chomp
     case input.downcase
@@ -92,6 +93,7 @@ class Marvel101::CLI
   end
 
   def character_menu(character, category, team = nil)
+    character.get_info unless character.scraped?
     display_character(character, category, team)
     input = gets.chomp
     case input.downcase
