@@ -6,14 +6,7 @@ class Marvel101::CLI
   end
 
   def main_menu
-    puts "Here are your primary options:"
-    puts "1. Popular Teams!"
-    puts "2. Popular Heroes!"
-    puts "3. Popular Villains!"
-    puts "4. Marvel's Currently Featured!"
-    puts "5. Women of Marvel!"
-    puts "6. Exit Marvel 101"
-    puts "Select a number from the options above and we'll get started!"
+    display_main
     input = gets.chomp.to_i
     case input
     when 1 then category_menu("Popular Teams")
@@ -28,24 +21,39 @@ class Marvel101::CLI
     end
   end
 
+  def display_main
+    puts "Here are your primary options:"
+    puts "1. Popular Teams!"
+    puts "2. Popular Heroes!"
+    puts "3. Popular Villains!"
+    puts "4. Marvel's Currently Featured!"
+    puts "5. Women of Marvel!"
+    puts "6. Exit Marvel 101"
+    puts "Select a number from the options above and we'll get started!"
+  end
+
   def category_menu(category)
-    display_category = Marvel101::Category.new("#{category}", "#{category} url")
-    puts "#{display_category.name}? Nice pick!"
-    puts "Here is a list of #{category}! (Sorry if your favorite didn't make the cut)"
-    display_category.topics.each.with_index(1) {|topic, index| puts "#{index}. #{topic.name}"}
-    puts "Select a number from the options above to learn more!"
-    puts "You can also enter 'main' to go back to the main menu or 'exit' to... exit"
+    target_category = Marvel101::Category.new("#{category}", "#{category} url")
+    display_category(target_category)
     input = gets.chomp
     case input.downcase
     when "main" then main_menu
     when "exit" then exit_message
     else
-      if category == "Popular Teams"
-        team_menu(display_category.topics[input.to_i - 1])
+      if target_category.name == "Popular Teams"
+        team_menu(target_category.topics[input.to_i - 1])
       else
-        character_menu(display_category.topics[input.to_i - 1])
+        character_menu(target_category.topics[input.to_i - 1])
       end
     end
+  end
+
+  def display_category(target_category)
+    puts "\n#{target_category.name}? Nice pick!"
+    puts "Here is a list of #{target_category.name}! (Sorry if your favorite didn't make the cut)"
+    target_category.topics.each.with_index(1) {|topic, index| puts "#{index}. #{topic.name}"}
+    puts "Select a number from the options above to learn more!"
+    puts "You can also enter 'main' to go back to the main menu or 'exit' to... exit"
   end
 
   def team_menu(team)
