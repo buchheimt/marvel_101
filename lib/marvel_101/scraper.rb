@@ -28,7 +28,7 @@ class Marvel101::Scraper
       topics << Marvel101::Character.new("Spider-Man", "Spider-Man url")
       topics << Marvel101::Character.new("Luke Cage", "Luke Cage url")
       topics << Marvel101::Character.new("Iron Fist", "Iron Fist url")
-    when "Women of Marvel url"
+    when "The Women of Marvel url"
       topics << Marvel101::Character.new("Black Widow", "Black Widow url")
       topics << Marvel101::Character.new("Storm", "Storm url")
       topics << Marvel101::Character.new("Captain Marvel", "Captain Marvel url")
