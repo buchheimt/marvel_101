@@ -4,7 +4,7 @@ RSpec.describe "Marvel101::Character" do
 
   describe "#initialize" do
     it "Initializes a Character with a name"  do
-      new_char = Marvel101::Character.new("Thor")
+      new_char = Marvel101::Character.new("Thor", "Thor url")
       expect(new_char.name).to eq("Thor")
     end
   end

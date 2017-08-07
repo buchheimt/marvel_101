@@ -7,7 +7,7 @@ class Marvel101::Team
     @members = []
     @description = description
     @location = location
-    members.each {|char| @members << Marvel101::Character.new(char)}
+    members.each {|char| @members << Marvel101::Character.new(char, "#{char} url")}
   end
 
 end

@@ -1,9 +1,11 @@
 class Marvel101::Character
 
-  attr_accessor :name
+  attr_accessor :name, :url, :description, :powers
 
-  def initialize(name)
+  def initialize(name, url)
     @name = name
+    @url = url
+    attributes = Marvel101::Scraper.new(url).scrape_character
   end
 
 end
