@@ -83,9 +83,9 @@ class Marvel101::CLI
     puts "Here is some more info about the #{team.name}."
     puts "-" * 15 + "The #{team.name}" + "-" * 15
     puts "Core Members: "
-    team.members.each.with_index(1) {|member, index| puts "    #{index}. #{member.name}"}
-    puts "Description: #{team.description}"
-    puts "Location: #{team.location}"
+    team.members.each.with_index(1) {|member, index| puts "    #{index}. #{member.name}"} if team.members
+    puts "Description: #{team.description}" if team.description
+    puts "Location: #{team.location}" if team.location
     puts "Select a number from the options above to learn more!"
     puts "You can also enter 'main' to go back to the main menu or 'exit' to... exit"
     puts "you can also type 'category' to return to the list of #{category.name}."

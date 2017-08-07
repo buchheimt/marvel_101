@@ -53,7 +53,7 @@ class Marvel101::Scraper
       members = []
       member_names = ["Groot", "Star Lord", "Drax"]
       member_names.each {|char| members << Marvel101::Character.new(char, "#{char} url")}
-      {members: members, description: "Intergalactic band of misfits", location: "The universe"}
+      {members: members, description: "Intergalactic band of misfits"}
     end
   end
 
