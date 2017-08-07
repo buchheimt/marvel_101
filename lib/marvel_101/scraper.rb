@@ -18,7 +18,7 @@ class Marvel101::Scraper
       name = link.text.strip
       url = link.attr("href")
       if @url.include?("team")
-        topics << Marvel101::Team.find_or_create_by_name(name, url)
+        topics << Marvel101::Team.find_or_create_by_name(name, "http:#{url}")
       else
         topics << Marvel101::Character.find_or_create_by_name(name, "http:#{url}")
       end
@@ -28,17 +28,11 @@ class Marvel101::Scraper
 
   def scrape_team
     details = {}
-    doc = Nokogiri::HTML(open("http:#{url}"))
+    doc = Nokogiri::HTML(open(url))
 
     details[:description] = description_scrape(doc) if description_scrape(doc)
 
     members = []
-    members_grid = doc.css("div.grid-container").first
-    members_grid.css("div.row-item").each do |card|
-      name = card.css("a.meta-title").text.strip
-      url = "http:#{card.css("a.meta-title").attr("href").value}"
-      members << Marvel101::Character.find_or_create_by_name(name, url)
-    end
     details[:members] = members
     url_101_text = doc.css("div#MarvelVideo101 script").text
     if url_101_text != ""
@@ -53,7 +47,6 @@ class Marvel101::Scraper
   def scrape_character
     details = {}
     doc = Nokogiri::HTML(open(url))
-    binding.pry
 
     details[:description] = description_scrape(doc) if description_scrape(doc)
 
@@ -80,7 +73,6 @@ class Marvel101::Scraper
   def description_scrape(doc)
     raw_description = doc.css("div.featured-item-desc p:nth-child(2)")
     if raw_description && raw_description.text.strip != ""
-      binding.pry
       if raw_description.text.strip[/\s{5}/]
         desc_value = raw_description.text.strip[/.*\s{5}/].strip
       else
