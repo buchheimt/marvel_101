@@ -18,6 +18,21 @@ class Marvel101::Scraper
       topics << Marvel101::Character.new("Spider-Man")
       topics << Marvel101::Character.new("Iron Man")
       topics << Marvel101::Character.new("The Hulk")
+    when "Popular Villains url"
+      topics << Marvel101::Character.new("Ultron")
+      topics << Marvel101::Character.new("Thanos")
+      topics << Marvel101::Character.new("Green Goblin")
+      topics << Marvel101::Character.new("Loki")
+    when "Featured Characters url"
+      topics << Marvel101::Character.new("Black Panther")
+      topics << Marvel101::Character.new("Spider-Man")
+      topics << Marvel101::Character.new("Luke Cage")
+      topics << Marvel101::Character.new("Iron Fist")
+    when "Women of Marvel url"
+      topics << Marvel101::Character.new("Black Widow")
+      topics << Marvel101::Character.new("Storm")
+      topics << Marvel101::Character.new("Captain Marvel")
+      topics << Marvel101::Character.new("She-Hulk")
     end
     topics
   end
