@@ -9,11 +9,11 @@ class Marvel101::CLI
     display_main
     input = gets.chomp.to_i
     case input
-    when 1 then category_menu("Popular Teams")
-    when 2 then category_menu("Popular Heroes")
-    when 3 then category_menu("Popular Villains")
-    when 4 then category_menu("Featured Characters")
-    when 5 then category_menu("The Women of Marvel")
+    when 1 then category_menu("Popular Teams", "url")
+    when 2 then category_menu("Popular Heroes", "url")
+    when 3 then category_menu("Popular Villains", "url")
+    when 4 then category_menu("Featured Characters", "url")
+    when 5 then category_menu("The Women of Marvel", "url")
     when 6 then exit_message
     else
       error_message
@@ -32,7 +32,7 @@ class Marvel101::CLI
     puts "Select a number from the options above and we'll get started!"
   end
 
-  def category_menu(category)
+  def category_menu(category, url)
     target_category = Marvel101::Category.find_or_create_by_name("#{category}", "#{category} url")
     display_category(target_category)
     input = gets.chomp
@@ -48,7 +48,7 @@ class Marvel101::CLI
         end
       else
         error_message
-        category_menu(category)
+        category_menu(category, "url")
       end
     end
   end
@@ -70,7 +70,7 @@ class Marvel101::CLI
     case input.downcase
     when "main" then main_menu
     when "exit" then exit_message
-    when "category" then category_menu(category.name)
+    when "category" then category_menu(category.name, "url")
     else
       if valid_input?(input, team.members)
           character_menu(team.members[input.to_i - 1], category, team)
@@ -105,7 +105,7 @@ class Marvel101::CLI
     input = gets.chomp
     case input.downcase
     when "main" then main_menu
-    when "category" then category_menu(category.name)
+    when "category" then category_menu(category.name, "url")
     when "exit" then exit_message
     else
       if input.downcase == "team"
