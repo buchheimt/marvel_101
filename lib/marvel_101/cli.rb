@@ -21,7 +21,7 @@ class Marvel101::CLI
     when 3 then category_menu("Popular Villains")
     when 4 then category_menu("Featured Characters")
     when 5 then category_menu("Women of Marvel")
-    when 6 then puts "Sure thing, have a super day! (haha super... get it?)"
+    when 6 then exit_message
     else
       puts "Yeah... that's not an option. Let's try that again."
       main_menu
@@ -34,11 +34,17 @@ class Marvel101::CLI
     puts "Here is a list of #{category}! (Sorry if your favorite didn't make the cut)"
     display_category.topics.each.with_index(1) {|topic, index| puts "#{index}. #{topic.name}"}
     puts "Select a number from the options above to learn more!"
-    input = gets.chomp.to_i - 1
-    if category == "Popular Teams"
-      team_menu(display_category.topics[input])
+    puts "You can also enter 'main' to go back to the main menu or 'exit' to... exit"
+    input = gets.chomp
+    case input.downcase
+    when "main" then main_menu
+    when "exit" then exit_message
     else
-      character_menu(display_category.topics[input])
+      if category == "Popular Teams"
+        team_menu(display_category.topics[input.to_i - 1])
+      else
+        character_menu(display_category.topics[input.to_i - 1])
+      end
     end
   end
 
@@ -57,6 +63,10 @@ class Marvel101::CLI
 
   def character_menu(character)
     puts "Hi I'm #{character.name}!"
+  end
+
+  def exit_message
+    puts "Oh ok, well have a super day!"
   end
 
 end
