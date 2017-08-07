@@ -16,7 +16,7 @@ class Marvel101::CLI
     when 5 then category_menu("Women of Marvel")
     when 6 then exit_message
     else
-      puts "Yeah... that's not an option. Let's try that again."
+      error_message
       main_menu
     end
   end
@@ -47,7 +47,7 @@ class Marvel101::CLI
           character_menu(target_category.topics[input.to_i - 1], target_category)
         end
       else
-        puts "Sorry, that wasn't a valid option. Let's try again."
+        error_message
         category_menu(category)
       end
     end
@@ -68,7 +68,13 @@ class Marvel101::CLI
     when "main" then main_menu
     when "exit" then exit_message
     when "category" then category_menu(category.name)
-    else character_menu(team.members[input.to_i - 1], category, team)
+    else
+      if valid_input?(input, team.members)
+          character_menu(team.members[input.to_i - 1], category, team)
+      else
+        error_message
+        team_menu(team, category)
+      end
     end
   end
 
@@ -91,8 +97,14 @@ class Marvel101::CLI
     case input.downcase
     when "main" then main_menu
     when "category" then category_menu(category.name)
-    when "team" then team ? category_menu(team.name) : exit_message
-    else exit_message
+    when "exit" then exit_message
+    else
+      if input.downcase == "team"
+        team_menu(team, category)
+      else
+        error_message
+        character_menu(character, category, team)
+      end
     end
   end
 
@@ -108,7 +120,11 @@ class Marvel101::CLI
   end
 
   def exit_message
-    puts "Oh ok, well have a super day!"
+    puts "\nOh ok, well have a super day!"
+  end
+
+  def error_message
+    puts "\nSorry, that wasn't a valid option. Let's try again."
   end
 
 end
