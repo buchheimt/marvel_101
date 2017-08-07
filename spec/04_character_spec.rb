@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe "Marvel101::Team" do
+RSpec.describe "Marvel101::Character" do
 
   describe "#initialize" do
     it "Initializes a Character with a name"  do
