@@ -57,20 +57,39 @@ class Marvel101::CLI
   end
 
   def team_menu(team)
-    puts "So you definitely selected the #{team.name}, cool."
-    puts "Here is some more info about the #{team.name}!"
+    display_team(team)
+    input = gets.chomp
+    case input.downcase
+    when "main" then main_menu
+    when "exit" then exit_message
+    else character_menu(team.members[input.to_i - 1])
+    end
+  end
+
+  def display_team(team)
+    puts "You selected the #{team.name}, awesome!"
+    puts "Here is some more info about the #{team.name}."
     puts "-" * 15 + "The #{team.name}" + "-" * 15
     puts "Core Members: "
     team.members.each.with_index(1) {|member, index| puts "    #{index}. #{member.name}"}
     puts "Description: #{team.description}"
     puts "Location: #{team.location}"
     puts "Select a number from the options above to learn more!"
-    input = gets.chomp.to_i - 1
-    character_menu(team.members[input])
+    puts "You can also enter 'main' to go back to the main menu or 'exit' to... exit"
   end
 
   def character_menu(character)
+    display_character(character)
+    input = gets.chomp
+    case input.downcase
+    when "main" then main_menu
+    else exit_message
+    end
+  end
+
+  def display_character(character)
     puts "Hi I'm #{character.name}!"
+    puts "You can enter 'main' to go back to the main menu or 'exit' to... exit"
   end
 
   def exit_message
