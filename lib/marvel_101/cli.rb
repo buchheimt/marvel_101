@@ -117,8 +117,9 @@ class Marvel101::CLI
   def display_character(character, category, team)
     puts "\n#{character.name} it is!"
     puts "-" * 15 + "#{character.name}" + "-" * 15
-    puts "description: #{character.description}" if character.description
-    puts "powers: #{character.powers}" if character.powers
+    character.details.each do |detail|
+      puts "#{detail.to_s.split("_").join(" ")}: #{character.send("#{detail}")}" if character.send("#{detail}")
+    end
     puts "-" * 15 + "-" * "#{character.name}".size + "-" * 15
 
     puts "You can enter 'main' to go back to the main menu or 'exit' to... exit"

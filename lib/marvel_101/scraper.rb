@@ -59,6 +59,17 @@ class Marvel101::Scraper
 
   def scrape_character
     case url
+    when "Spider-Man url"
+      {
+        description: "Friendly neighborhood spider-man",
+        powers: "super senses",
+        abilities: "wall climbing, web",
+        groups: "Avengers",
+        first_app: "Amazing Fantasy #15",
+        origin: "Amazing Fantasy #15",
+        url_101: "spidey 101 url",
+        url_wiki: "spidey wiki url"
+      }
     when "Thor url"
       {description: "God of Thunder", powers: "super hammer and strength etc."}
     when "The Hulk url"
