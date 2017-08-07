@@ -10,9 +10,9 @@ class Marvel101::Scraper
     topics = []
     case url
     when "Popular Teams url"
-      topics << Marvel101::Team.new("Avengers", "Avengers url")
-      topics << Marvel101::Team.new("X-Men", "X-Men url")
-      topics << Marvel101::Team.new("Guardians of the Galaxy", "Guardians of the Galaxy url")
+      topics << Marvel101::Team.find_or_create_by_name("Avengers", "Avengers url")
+      topics << Marvel101::Team.find_or_create_by_name("X-Men", "X-Men url")
+      topics << Marvel101::Team.find_or_create_by_name("Guardians of the Galaxy", "Guardians of the Galaxy url")
     when "Popular Heroes url"
       topics << Marvel101::Character.new("Thor", "Thor url")
       topics << Marvel101::Character.new("Spider-Man", "Spider-Man url")

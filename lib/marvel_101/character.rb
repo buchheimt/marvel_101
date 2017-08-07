@@ -2,10 +2,13 @@ class Marvel101::Character
 
   attr_accessor :name, :url, :description, :powers
 
+  @@all = []
+
   def initialize(name, url)
     @name = name
     @url = url
     @scraped = false
+    @@all << self
   end
 
   def get_info
@@ -16,6 +19,11 @@ class Marvel101::Character
 
   def scraped?
     @scraped
+  end
+
+  def self.find_or_create_by_name(name, url)
+    search = @@all.detect {|character| character.name == name}
+    search ? search : self.new(name, url)
   end
 
 end

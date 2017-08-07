@@ -2,10 +2,13 @@ class Marvel101::Team
 
   attr_accessor :name, :members, :description, :location
 
+  @@all = []
+
   def initialize(name, url)
     @name = name
     @url = url
     @scraped = false
+    @@all << self
   end
 
   def get_info
@@ -16,6 +19,11 @@ class Marvel101::Team
 
   def scraped?
     @scraped
+  end
+
+  def self.find_or_create_by_name(name, url)
+    search = @@all.detect {|team| team.name == name}
+    search ? search : self.new(name, url)
   end
 
 end
