@@ -43,12 +43,12 @@ class Marvel101::Scraper
       members = []
       member_names = ["Thor", "The Hulk", "Iron Man", "Captain America"]
       member_names.each {|char| members << Marvel101::Character.new(char, "#{char} url")}
-      {members: members, description: "THE super team", location: "Avengers HQ"}
+      {members: members, description: "THE super team", url_101: "Avengers 101 url"}
     when "X-Men url"
       members = []
       member_names = ["Wolverine", "Cyclops", "Jean Gray"]
       member_names.each {|char| members << Marvel101::Character.new(char, "#{char} url")}
-      {members: members, description: "Vast team of gifted mutants", location: "Xavier's Academy"}
+      {members: members, description: "Vast team of gifted mutants", url_101: "Avengers 101 url"}
     when "Guardians of the Galaxy url"
       members = []
       member_names = ["Groot", "Star Lord", "Drax"]

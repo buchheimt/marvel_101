@@ -85,10 +85,13 @@ class Marvel101::CLI
     puts "\nYou selected the #{team.name}, awesome!"
     puts "Here is some more info about the #{team.name}."
     puts "-" * 15 + "The #{team.name}" + "-" * 15
-    puts "Core Members: "
-    team.members.each.with_index(1) {|member, index| puts "    #{index}. #{member.name}"} if team.members
-    puts "Description: #{team.description}" if team.description
-    puts "Location: #{team.location}" if team.location
+    team.details.each do |detail|
+      puts "#{detail.to_s.split("_").join(" ")}: #{team.send("#{detail}")}" if team.send("#{detail}")
+    end
+    if team.members
+      puts "core members:"
+      team.members.each.with_index(1) {|member, index| puts "    #{index}. #{member.name}"}
+    end
     puts "-" * 15 + "-" * "The #{team.name}".size + "-" * 15
 
     puts "Select a character number from the options above to learn more!"

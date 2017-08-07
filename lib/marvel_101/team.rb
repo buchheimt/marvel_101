@@ -1,6 +1,6 @@
 class Marvel101::Team
 
-  attr_accessor :name, :members, :description, :location
+  attr_accessor :name, :url, :members, :details, :description, :url_101, :url_wiki
 
   @@all = []
 
@@ -8,6 +8,7 @@ class Marvel101::Team
     @name = name
     @url = url
     @scraped = false
+    @details = [:description, :url, :url_101, :url_wiki]
     @@all << self
   end
 
