@@ -27,4 +27,8 @@ class Marvel101::Character
     search ? search : self.new(name, url)
   end
 
+  def self.all
+    @@all
+  end
+
 end
