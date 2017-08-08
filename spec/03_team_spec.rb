@@ -22,6 +22,11 @@ RSpec.describe "Marvel101::Team" do
       new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
       expect(new_team.details[0]).to eq(:description)
     end
+
+    it "Adds self to @@all upon initialization"  do
+      new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
+      expect(Marvel101::Team.all.last).to eq(new_team)
+    end
   end
 
   describe "#get_info" do

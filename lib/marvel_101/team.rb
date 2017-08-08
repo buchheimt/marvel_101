@@ -22,6 +22,10 @@ class Marvel101::Team
     @scraped
   end
 
+  def self.all
+    @@all
+  end
+
   def self.find_or_create_by_name(name, url)
     search = @@all.detect {|team| team.name == name}
     search ? search : self.new(name, url)
