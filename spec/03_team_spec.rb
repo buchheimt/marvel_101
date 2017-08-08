@@ -15,7 +15,7 @@ RSpec.describe "Marvel101::Team" do
 
     it "Initializes with scraped set to false"  do
       new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
-      expect(new_team.scraped).to eq(false)
+      expect(new_team.scraped?).to eq(false)
     end
 
     it "Initializes with a details array of symbols"  do
@@ -53,6 +53,36 @@ RSpec.describe "Marvel101::Team" do
       new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
       new_team.get_info
       expect(new_team.url_wiki).to eq("http://marvel.com/universe/Avengers")
+    end
+
+    it "sets scraped to true" do
+      new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
+      new_team.get_info
+      expect(new_team.scraped?).to eq(true)
+    end
+
+    it "correctly handles missing info" do
+      new_team = Marvel101::Team.new("Defenders", "fixtures/defenders.html")
+      new_team.get_info
+      expect(new_team.url_101).to eq(nil)
+    end
+
+    it "correctly handles available info when some is missing" do
+      new_team = Marvel101::Team.new("Defenders", "fixtures/defenders.html")
+      new_team.get_info
+      expect(new_team.url_wiki).to eq("http://marvel.com/universe/Defenders")
+    end
+  end
+
+  describe "self.find_or_create_by_name" do
+    it "finds existing team first if possible" do
+      new_team = Marvel101::Team.find_or_create_by_name("Defenders", "fixtures/defenders.html")
+      expect(new_team.scraped?).to eq(true)
+    end
+
+    it "creates new team if no team exists" do
+      new_team = Marvel101::Team.find_or_create_by_name("X-Men", "#")
+      expect(new_team.scraped?).to eq(false)
     end
   end
 
