@@ -1,6 +1,6 @@
 class Marvel101::Team
 
-  attr_accessor :name, :url, :members, :details, :description, :url_101, :url_wiki
+  attr_accessor :name, :url, :scraped, :members, :details, :description, :url_101, :url_wiki
 
   @@all = []
 

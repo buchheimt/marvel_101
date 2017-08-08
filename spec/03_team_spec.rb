@@ -3,9 +3,24 @@ require "spec_helper"
 RSpec.describe "Marvel101::Team" do
 
   describe "#initialize" do
-    it "Initializes a Team with a name"  do
+    it "Initializes with a name"  do
       new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
       expect(new_team.name).to eq("Avengers")
+    end
+
+    it "Initializes with a url"  do
+      new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
+      expect(new_team.url).to eq("fixtures/avengers.html")
+    end
+
+    it "Initializes with scraped set to false"  do
+      new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
+      expect(new_team.scraped).to eq(false)
+    end
+
+    it "Initializes with a details array of symbols"  do
+      new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
+      expect(new_team.details[0]).to eq(:description)
     end
   end
 
