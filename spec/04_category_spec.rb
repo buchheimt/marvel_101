@@ -13,9 +13,19 @@ RSpec.describe "Marvel101::Category" do
       expect(new_category.url).to eq("fixtures/teams.html")
     end
 
-    it "Initializes with an array of scraped topics"  do
+    it "Initializes with 'Popular Teams' an array of scraped topics"  do
       new_category = Marvel101::Category.new("Popular Teams", "fixtures/teams.html")
       expect(new_category.topics[0].name).to eq("Avengers")
+    end
+
+    it "Initializes with 'Popular Heroes' an array of scraped topics"  do
+      new_category = Marvel101::Category.new("Popular Heroes", "fixtures/heroes.html")
+      expect(new_category.topics[0].name).to eq("Spider-Man")
+    end
+
+    it "Initializes with 'Featured Characters' an array of scraped topics"  do
+      new_category = Marvel101::Category.new("Featured Characters", "fixtures/featured.html")
+      expect(new_category.topics[0].name).to eq("Black Panther")
     end
 
     it "Adds self to @@all upon initialization"  do
