@@ -90,6 +90,45 @@ RSpec.describe "Marvel101::Scraper" do
     end
   end
 
+  describe '#scrape_character' do
+    it "retrieves a description if applicable" do
+      scraper = Marvel101::Scraper.new("fixtures/thor.html")
+      info = scraper.scrape_character
+      description = "As the Norse God of thunder and lightning, Thor wields one of the greatest weapons ever made, the enchanted hammer Mjolnir. While others have described Thor as an over-muscled, oafish imbecile, he's quite smart and compassionate.  He's self-assured, and he would never, ever stop fighting for a worthwhile cause."
+      expect(info[:description]).to eq(description)
+    end
+
+    it "handles no description" do
+      scraper = Marvel101::Scraper.new("fixtures/gambit.html")
+      info = scraper.scrape_character
+      expect(info.include?(:description)).to eq(false)
+    end
+
+    it "retrieves a marvel 101 link if applicable"  do
+      scraper = Marvel101::Scraper.new("fixtures/thor.html")
+      info = scraper.scrape_character
+      expect(info[:url_101]).to eq("https://www.youtube.com/watch?v=ZfSBdW6vblc")
+    end
+
+    it "retrieves a marvel wiki link if applicable"  do
+      scraper = Marvel101::Scraper.new("fixtures/thor.html")
+      info = scraper.scrape_character
+      expect(info[:url_wiki]).to eq("http://marvel.com/universe/Thor_(Thor_Odinson)")
+    end
+
+    it "handles no marvel wiki url" do
+      scraper = Marvel101::Scraper.new("fixtures/gambit.html")
+      info = scraper.scrape_character
+      expect(info.include?(:url_wiki)).to eq(false)
+    end
+
+    it "handles no marvel 101 url" do
+      scraper = Marvel101::Scraper.new("fixtures/gambit.html")
+      info = scraper.scrape_character
+      expect(info.include?(:url_101)).to eq(false)
+    end
+  end
+
   describe '#description_scrape' do
     it "returns the correctly formatted string for teams" do
       scraper = Marvel101::Scraper.new("fixtures/avengers.html")
