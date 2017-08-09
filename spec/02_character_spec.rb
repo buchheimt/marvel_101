@@ -33,7 +33,7 @@ RSpec.describe "Marvel101::Character" do
     it "retrieves and assigns a description if applicable" do
       new_char = Marvel101::Character.new("Thor", "fixtures/thor.html")
       new_char.get_info
-      description = "As the Norse God of thunder and lightning, Thor wields one of the greatest weapons ever made, the enchanted hammer Mjolnir. While others have described Thor as an over-muscled, oafish imbecile, he's quite smart and compassionate. He's self-assured, and he would never, ever stop fighting for a worthwhile cause."
+      description = "As the Norse God of thunder and lightning, Thor wields one of the greatest weapons ever made, the enchanted hammer Mjolnir. While others have described Thor as an over-muscled, oafish imbecile, he's quite smart and compassionate.  He's self-assured, and he would never, ever stop fighting for a worthwhile cause."
       expect(new_char.description).to eq(description)
     end
 
@@ -58,19 +58,19 @@ RSpec.describe "Marvel101::Character" do
     it "correctly handles missing info" do
       new_char = Marvel101::Character.new("Nova", "fixtures/nova.html")
       new_char.get_info
-      expect(new_char.url_101).to eq(nil)
+      expect(new_char.url_wiki).to eq(nil)
     end
 
     it "correctly handles available info when some is missing" do
       new_char = Marvel101::Character.new("Nova", "fixtures/nova.html")
       new_char.get_info
-      expect(new_char.url_wiki).to eq("http://marvel.com/universe/Nova")
+      expect(new_char.url_101).to eq("https://www.youtube.com/watch?v=cFXqrbLXu3M")
     end
   end
 
   describe "self.find_or_create_by_name" do
     it "finds existing character first if possible" do
-      new_char = Marvel101::Character.find_or_create_by_name("Thor", "fixtures/thor.html")
+      new_char = Marvel101::Character.find_or_create_by_name("Nova", "fixtures/nova.html")
       expect(new_char.scraped?).to eq(true)
     end
 

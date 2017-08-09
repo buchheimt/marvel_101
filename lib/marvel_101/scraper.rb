@@ -78,12 +78,9 @@ class Marvel101::Scraper
 
   def description_scrape(doc)
     raw_description = doc.css("div.featured-item-desc p:nth-child(2)")
+    #binding.pry
     if raw_description && raw_description.text.strip != ""
-      if raw_description.text.strip[/\s{5}/]
-        desc_value = raw_description.text.strip[/.*\s{5}/].strip
-      else
-        desc_value = raw_description.text.strip
-      end
+        desc_value = raw_description.text.gsub(/\n\s*more/," ").gsub(/\n\s*less/," ").gsub(/\n\s*/," ").strip
     end
   end
 
