@@ -72,6 +72,20 @@ RSpec.describe "Marvel101::Team" do
       new_team.get_info
       expect(new_team.url_wiki).to eq("http://marvel.com/universe/Defenders")
     end
+
+    it "sets Characters' category to self.category"  do
+      new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
+      new_team.category = "Popular Teams"
+      new_team.get_info
+      expect(new_team.members[0].category).to eq(new_team.category)
+    end
+
+    it "sets Characters' team to self"  do
+      new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
+      new_team.category = "Popular Teams"
+      new_team.get_info
+      expect(new_team.members[0].team).to eq(new_team)
+    end
   end
 
   describe "self.find_or_create_by_name" do

@@ -29,8 +29,13 @@ RSpec.describe "Marvel101::Category" do
     end
 
     it "Adds self to @@all upon initialization"  do
-      new_category = Marvel101::Category.new("Popular Teams", "fixtures/avengers.html")
+      new_category = Marvel101::Category.new("Popular Teams", "fixtures/teams.html")
       expect(Marvel101::Category.all.last).to eq(new_category)
+    end
+
+    it "sets topics' category to self"  do
+      new_category = Marvel101::Category.new("Popular Teams", "fixtures/teams.html")
+      expect(new_category.topics[0].category).to eq(new_category)
     end
   end
 
