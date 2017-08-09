@@ -37,6 +37,13 @@ RSpec.describe "Marvel101::Character" do
       expect(new_char.description).to eq(description)
     end
 
+    it "retrieves and mass assigns details where available" do
+      new_char = Marvel101::Character.new("Thor", "fixtures/thor.html")
+      new_char.get_info
+      abilities = "Thor is trained in the arts of war, being a superbly skilled warrior, highly proficient in hand-to-hand combat, swordsmanship and hammer throwing."
+      expect(new_char.abilities).to eq(abilities)
+    end
+
     it "retrieves and sets a marvel 101 link applicable"  do
       new_char = Marvel101::Character.new("Thor", "fixtures/thor.html")
       new_char.get_info
