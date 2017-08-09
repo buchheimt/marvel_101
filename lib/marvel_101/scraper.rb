@@ -6,7 +6,7 @@ class Marvel101::Scraper
     @url = url
   end
 
-  def scrape_category
+  def scrape_list
     doc = Nokogiri::HTML(open(url))
     if doc.css("div#comicsListing div.row-item").size > 0
       item_cards = doc.css("div#comicsListing div.row-item")

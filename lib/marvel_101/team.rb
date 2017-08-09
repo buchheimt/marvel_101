@@ -4,7 +4,7 @@ class Marvel101::Team
   include Memorable::InstanceMethods
   extend Memorable::ClassMethods
 
-  attr_accessor :name, :url, :category, :members, :details, :description, :url_101,
+  attr_accessor :name, :url, :list, :members, :details, :description, :url_101,
                 :url_wiki
 
   @@all = []
@@ -20,7 +20,7 @@ class Marvel101::Team
     attributes.each {|key, value| self.send("#{key}=", value)}
     if members
       members.each do |member|
-        member.category = category;
+        member.list = list;
         member.team = self
       end
     end

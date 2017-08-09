@@ -18,7 +18,7 @@ class Marvel101::CLI
     input = gets.chomp.downcase
     if valid_input?(input, STARTING_PAGES)
       name, url = STARTING_PAGES[input.to_i - 1]
-      category_menu(Marvel101::Category.find_or_create_by_name(name, url))
+      list_menu(Marvel101::List.find_or_create_by_name(name, url))
     elsif input == "exit"
       exit_message
     else
@@ -34,31 +34,31 @@ class Marvel101::CLI
     puts "Select a number from the options above and we'll get started!"
   end
 
-  def category_menu(category)
-    display_category(category)
+  def list_menu(list)
+    display_list(list)
     input = gets.chomp.downcase
     case input
     when "main" then main_menu
     when "exit" then exit_message
     else
-      if valid_input?(input, category.topics)
-        topic = category.topics[input.to_i - 1]
+      if valid_input?(input, list.topics)
+        topic = list.topics[input.to_i - 1]
         topic.is_a?(Marvel101::Team) ? team_menu(topic) : character_menu(topic)
       else
         error_message
-        category_menu(category)
+        list_menu(clist)
       end
     end
   end
 
-  def display_category(category)
-    puts "\n#{category.name}? Nice pick!"
-    puts "Here is a list of #{category.name}! (Sorry if your favorite didn't make the cut)"
-    puts "-" * 15 + "The #{category.name}" + "-" * 15
-    category.topics.each.with_index(1) {|topic, index| puts "#{index}. #{topic.name}"}
-    puts "-" * 15 + "-" * "The #{category.name}".size + "-" * 15
+  def display_list(list)
+    puts "\n#{list.name}? Nice pick!"
+    puts "Here is a list of #{list.name}! (Sorry if your favorite didn't make the cut)"
+    puts "-" * 15 + "The #{list.name}" + "-" * 15
+    list.topics.each.with_index(1) {|topic, index| puts "#{index}. #{topic.name}"}
+    puts "-" * 15 + "-" * "The #{list.name}".size + "-" * 15
     puts "Select a topic number from the options above to learn more!"
-    options_message(category)
+    options_message(list)
   end
 
   def team_menu(team)
@@ -68,7 +68,7 @@ class Marvel101::CLI
     case input
     when "main" then main_menu
     when "exit" then exit_message
-    when "category" then category_menu(team.category)
+    when "list" then list_menu(team.list)
     else
       if valid_input?(input, team.members)
           character_menu(team.members[input.to_i - 1])
@@ -102,7 +102,7 @@ class Marvel101::CLI
     input = gets.chomp
     case input.downcase
     when "main" then main_menu
-    when "category" then category_menu(character.category)
+    when "list" then list_menu(character.list)
     when "exit" then exit_message
     else
       if input.downcase == "team"
@@ -142,7 +142,7 @@ class Marvel101::CLI
 
   def options_message(topic)
     puts "You can enter 'main' to go back to the main menu or 'exit' to... exit"
-    puts "you can also type 'category' to return to the #{topic.category.name} menu" if topic.is_a?(Marvel101::Team) || topic.is_a?(Marvel101::Character)
+    puts "you can also type 'list' to return to the #{topic.list.name} menu" if topic.is_a?(Marvel101::Team) || topic.is_a?(Marvel101::Character)
     puts "you can also type 'team' to return to the #{topic.team.name} menu" if topic.is_a?(Marvel101::Character) && topic.team
   end
 

@@ -1,7 +1,7 @@
 require "marvel_101/version"
 require "marvel_101/cli"
 require "marvel_101/team"
-require "marvel_101/category"
+require "marvel_101/list"
 require "marvel_101/character"
 require "marvel_101/scraper"
 require "marvel_101/concerns/memorable"

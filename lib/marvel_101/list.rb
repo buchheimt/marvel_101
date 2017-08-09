@@ -1,6 +1,6 @@
 require_relative 'concerns/memorable'
 
-class Marvel101::Category
+class Marvel101::List
   include Memorable::InstanceMethods
   extend Memorable::ClassMethods
 
@@ -9,8 +9,8 @@ class Marvel101::Category
   @@all = []
 
   def initialize(name, url)
-    @topics = Marvel101::Scraper.new(url).scrape_category
-    @topics.each {|topic| topic.category = self}
+    @topics = Marvel101::Scraper.new(url).scrape_list
+    @topics.each {|topic| topic.list = self}
     super
   end
 
