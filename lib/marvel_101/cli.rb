@@ -1,5 +1,13 @@
 class Marvel101::CLI
 
+  STARTING_PAGES = [
+    ["Popular Teams", "http://marvel.com/characters/list/997/titanic_teams"],
+    ["Popular Heroes", "http://marvel.com/characters/list/994/top_marvel_heroes"],
+    ["Popular Villains", "http://marvel.com/characters/list/995/bring_on_the_bad_guys"],
+    ["Featured Characters", "http://marvel.com/characters/browse"],
+    ["The Women of Marvel", "http://marvel.com/characters/list/996/women_of_marvel"]
+  ]
+
   def call
     puts "Welcome to Marvel 101!"
     main_menu
@@ -8,13 +16,11 @@ class Marvel101::CLI
   def main_menu
     display_main
     input = gets.chomp.downcase
-    case input
-    when "1" then category_menu(Marvel101::Category.find_or_create_by_name("Popular Teams", "http://marvel.com/characters/list/997/titanic_teams"))
-    when "2" then category_menu(Marvel101::Category.find_or_create_by_name("Popular Heroes", "http://marvel.com/characters/list/994/top_marvel_heroes"))
-    when "3" then category_menu(Marvel101::Category.find_or_create_by_name("Popular Villains", "http://marvel.com/characters/list/995/bring_on_the_bad_guys"))
-    when "4" then category_menu(Marvel101::Category.find_or_create_by_name("Featured Characters", "http://marvel.com/characters/browse"))
-    when "5" then category_menu(Marvel101::Category.find_or_create_by_name("The Women of Marvel", "http://marvel.com/characters/list/996/women_of_marvel"))
-    when "exit" then exit_message
+    if valid_input?(input, STARTING_PAGES)
+      name, url = STARTING_PAGES[input.to_i - 1]
+      category_menu(Marvel101::Category.find_or_create_by_name(name, url))
+    elsif input == "exit"
+      exit_message
     else
       error_message
       main_menu
@@ -23,11 +29,7 @@ class Marvel101::CLI
 
   def display_main
     puts "\nHere are your primary options:"
-    puts "1. Popular Teams!"
-    puts "2. Popular Heroes!"
-    puts "3. Popular Villains!"
-    puts "4. Marvel's Currently Featured!"
-    puts "5. The Women of Marvel!"
+    STARTING_PAGES.each.with_index(1) {|page, index| puts "#{index}. #{page[0]}!"}
     puts "Exit. Exit Marvel 101"
     puts "Select a number from the options above and we'll get started!"
   end
