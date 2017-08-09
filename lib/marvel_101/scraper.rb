@@ -7,23 +7,21 @@ class Marvel101::Scraper
   end
 
   def scrape_category
-    topics = []
     doc = Nokogiri::HTML(open(url))
     if doc.css("div#comicsListing div.row-item").size > 0
       item_cards = doc.css("div#comicsListing div.row-item")
     else
       item_cards = doc.css("section#featured-chars div.row-item")
     end
-    item_cards.css("div.row-item-text > h5 > a").each do |link|
+    item_cards.css("div.row-item-text > h5 > a").collect do |link|
       name = link.text.strip
       url = link.attr("href")
       if @url.include?("team")
-        topics << Marvel101::Team.find_or_create_by_name(name, "http:#{url}")
+        Marvel101::Team.find_or_create_by_name(name, "http:#{url}")
       else
-        topics << Marvel101::Character.find_or_create_by_name(name, "http:#{url}")
+        Marvel101::Character.find_or_create_by_name(name, "http:#{url}")
       end
     end
-    topics
   end
 
   def scrape_team
@@ -32,12 +30,11 @@ class Marvel101::Scraper
 
     details[:description] = description_scrape(doc) if description_scrape(doc)
 
-    members = []
     members_grid = doc.css("div.grid-container").first
-    members_grid.css("div.row-item").each do |card|
+    members = members_grid.css("div.row-item").collect do |card|
       name = card.css("a.meta-title").text.strip
       url = "http:#{card.css("a.meta-title").attr("href").value}"
-      members << Marvel101::Character.find_or_create_by_name(name, url)
+      Marvel101::Character.find_or_create_by_name(name, url)
     end
     details[:members] = members if members.size > 0
     url_101_text = doc.css("div#MarvelVideo101 script").text
