@@ -127,6 +127,18 @@ RSpec.describe "Marvel101::Scraper" do
       info = scraper.scrape_character
       expect(info.include?(:url_101)).to eq(false)
     end
+
+    it "retrieves info for mass assignment" do
+      scraper = Marvel101::Scraper.new("fixtures/thor.html")
+      info = scraper.scrape_character
+      expect(info[:real_name]).to eq("Thor Odinson")
+    end
+
+    it "handles missing mass assignment info" do
+      scraper = Marvel101::Scraper.new("fixtures/nova.html")
+      info = scraper.scrape_character
+      expect(info.include?(:real_name)).to eq(false)
+    end
   end
 
   describe '#description_scrape' do
