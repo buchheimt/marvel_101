@@ -18,12 +18,11 @@ class Marvel101::CLI
     input = gets.chomp.downcase
     if valid_input?(input, STARTING_PAGES)
       name, url = STARTING_PAGES[input.to_i - 1]
-      list_menu(Marvel101::List.find_or_create_by_name(name, url))
+      topic_menu(Marvel101::List.find_or_create_by_name(name, url))
     elsif input == "exit"
       exit_message
     else
-      error_message
-      main_menu
+      error_message("main")
     end
   end
 
@@ -34,97 +33,54 @@ class Marvel101::CLI
     puts "Select a number from the options above and we'll get started!"
   end
 
-  def list_menu(list)
-    display_list(list)
+  def topic_menu(topic)
+    topic.get_info unless topic.scraped?
+    display_topic(topic)
     input = gets.chomp.downcase
     case input
-    when "main" then main_menu
     when "exit" then exit_message
+    when "main" then main_menu
+    when "l", "list" then topic_menu(topic.list) unless topic.is_a?(Marvel101::List)
+    when "t", "team"
+      topic.team && topic.is_a?(Marvel101::Character) ? topic_menu(topic.team) : error_message(topic)
     else
-      if valid_input?(input, list.topics)
-        topic = list.topics[input.to_i - 1]
-        topic.is_a?(Marvel101::Team) ? team_menu(topic) : character_menu(topic)
+      if valid_input?(input, topic) && topic.is_a?(Marvel101::List)
+        topic_menu(topic.topics[input.to_i - 1])
+      elsif valid_input?(input, topic)
+        topic_menu(topic.members[input.to_i - 1])
       else
-        error_message
-        list_menu(clist)
+        error_message(topic)
       end
     end
   end
 
-  def display_list(list)
-    puts "\n#{list.name}? Nice pick!"
-    puts "Here is a list of #{list.name}! (Sorry if your favorite didn't make the cut)"
-    puts "-" * 15 + "The #{list.name}" + "-" * 15
-    list.display
-    puts "-" * 15 + "-" * "The #{list.name}".size + "-" * 15
-    puts "Select a topic number from the options above to learn more!"
-    options_message(list)
+  def display_topic(topic)
+    puts "\nYou selected the #{topic.name}, awesome!"
+    puts "Here is some more info about the #{topic.name}."
+    puts "-" * 15 + "The #{topic.name}" + "-" * 15
+    topic.display
+    puts "-" * 15 + "-" * "The #{topic.name}".size + "-" * 15
+    puts "Select a number from the options above to learn more!"
+    options_message(topic)
   end
 
-  def team_menu(team)
-    team.get_info unless team.scraped?
-    display_team(team)
-    input = gets.chomp.downcase
-    case input
-    when "main" then main_menu
-    when "exit" then exit_message
-    when "list" then list_menu(team.list)
-    else
-      if valid_input?(input, team.members)
-          character_menu(team.members[input.to_i - 1])
-      else
-        error_message
-        team_menu(team)
-      end
+  def valid_input?(input, subject)
+    if subject.is_a?(Marvel101::List)
+      input.to_i.between?(1, subject.topics.size)
+    elsif subject.is_a?(Marvel101::Team)
+      input.to_i.between?(1, subject.members.size)
+    elsif subject.is_a?(Array)
+      input.to_i.between?(1, subject.size)
     end
-  end
-
-  def display_team(team)
-    puts "\nYou selected the #{team.name}, awesome!"
-    puts "Here is some more info about the #{team.name}."
-    puts "-" * 15 + "The #{team.name}" + "-" * 15
-    team.display
-    puts "-" * 15 + "-" * "The #{team.name}".size + "-" * 15
-    puts "Select a character number from the options above to learn more!"
-    options_message(team)
-  end
-
-  def character_menu(character)
-    character.get_info unless character.scraped?
-    display_character(character)
-    input = gets.chomp
-    case input.downcase
-    when "main" then main_menu
-    when "list" then list_menu(character.list)
-    when "exit" then exit_message
-    else
-      if input.downcase == "team"
-        team_menu(character.team)
-      else
-        error_message
-        character_menu(character)
-      end
-    end
-  end
-
-  def display_character(character)
-    puts "\n#{character.name} it is!"
-    puts "-" * 15 + "#{character.name}" + "-" * 15
-    character.display
-    puts "-" * 15 + "-" * "#{character.name}".size + "-" * 15
-    options_message(character)
-  end
-
-  def valid_input?(input, options)
-    input.to_i.between?(1,options.size)
   end
 
   def exit_message
     puts "\nOh ok, well have a super day!"
   end
 
-  def error_message
+  def error_message(subject)
     puts "\nSorry, that wasn't a valid option. Let's try again."
+    subject == "main" ? main_menu : topic_menu(subject)
   end
 
   def options_message(topic)

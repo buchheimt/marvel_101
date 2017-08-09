@@ -18,6 +18,10 @@ class Marvel101::List
     topics.each.with_index(1) {|topic, index| puts "#{index}. #{topic.name}"}
   end
 
+  def scraped?
+    true
+  end
+
   def self.all
     @@all
   end
