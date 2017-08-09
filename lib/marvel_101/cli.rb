@@ -55,7 +55,7 @@ class Marvel101::CLI
     puts "\n#{list.name}? Nice pick!"
     puts "Here is a list of #{list.name}! (Sorry if your favorite didn't make the cut)"
     puts "-" * 15 + "The #{list.name}" + "-" * 15
-    list.topics.each.with_index(1) {|topic, index| puts "#{index}. #{topic.name}"}
+    list.display
     puts "-" * 15 + "-" * "The #{list.name}".size + "-" * 15
     puts "Select a topic number from the options above to learn more!"
     options_message(list)
@@ -83,15 +83,8 @@ class Marvel101::CLI
     puts "\nYou selected the #{team.name}, awesome!"
     puts "Here is some more info about the #{team.name}."
     puts "-" * 15 + "The #{team.name}" + "-" * 15
-    team.details.each do |detail|
-      puts "#{detail.to_s.split("_").join(" ").capitalize}: #{team.send("#{detail}")}" if team.send("#{detail}")
-    end
-    if team.members
-      puts "Core Members:"
-      team.members.each.with_index(1) {|member, index| puts "    #{index}. #{member.name}"}
-    end
+    team.display
     puts "-" * 15 + "-" * "The #{team.name}".size + "-" * 15
-
     puts "Select a character number from the options above to learn more!"
     options_message(team)
   end
@@ -115,16 +108,10 @@ class Marvel101::CLI
   end
 
   def display_character(character)
-    # maybe try grouping name/height/weight/abilities then long stuff then origins/urls/etc.
     puts "\n#{character.name} it is!"
     puts "-" * 15 + "#{character.name}" + "-" * 15
-    character.details.each do |detail|
-      puts "" if character.send("#{detail}") && character.send("#{detail}").size >= 80
-      puts "#{detail.to_s.split("_").join(" ").capitalize}: #{character.send("#{detail}")}" if character.send("#{detail}")
-      puts "" if character.send("#{detail}") && character.send("#{detail}").size >= 80
-    end
+    character.display
     puts "-" * 15 + "-" * "#{character.name}".size + "-" * 15
-
     options_message(character)
   end
 

@@ -27,6 +27,16 @@ class Marvel101::Team
     @scraped = true
   end
 
+  def display
+    details.each do |detail|
+      puts "#{detail.to_s.split("_").join(" ").capitalize}: #{self.send("#{detail}")}" if self.send("#{detail}")
+    end
+    if members
+      puts "Core Members:"
+      members.each.with_index(1) {|member, index| puts "    #{index}. #{member.name}"}
+    end
+  end
+
   def scraped?
     @scraped
   end

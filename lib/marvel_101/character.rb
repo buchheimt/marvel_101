@@ -20,6 +20,15 @@ class Marvel101::Character
     @scraped = true
   end
 
+  def display
+    # maybe try grouping name/height/weight/abilities then long stuff then origins/urls/etc.
+    details.each do |detail|
+      puts "" if self.send("#{detail}") && self.send("#{detail}").size >= 80
+      puts "#{detail.to_s.split("_").join(" ").capitalize}: #{self.send("#{detail}")}" if self.send("#{detail}")
+      puts "" if self.send("#{detail}") && self.send("#{detail}").size >= 80
+    end
+  end
+
   def scraped?
     @scraped
   end

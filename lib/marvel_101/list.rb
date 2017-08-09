@@ -14,6 +14,10 @@ class Marvel101::List
     super
   end
 
+  def display
+    topics.each.with_index(1) {|topic, index| puts "#{index}. #{topic.name}"}
+  end
+
   def self.all
     @@all
   end
