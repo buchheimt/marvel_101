@@ -7,14 +7,14 @@ class Marvel101::CLI
 
   def main_menu
     display_main
-    input = gets.chomp.to_i
+    input = gets.chomp.downcase
     case input
-    when 1 then category_menu("Popular Teams", "http://marvel.com/characters/list/997/titanic_teams")
-    when 2 then category_menu("Popular Heroes", "http://marvel.com/characters/list/994/top_marvel_heroes")
-    when 3 then category_menu("Popular Villains", "http://marvel.com/characters/list/995/bring_on_the_bad_guys")
-    when 4 then category_menu("Featured Characters", "http://marvel.com/characters/browse")
-    when 5 then category_menu("The Women of Marvel", "http://marvel.com/characters/list/996/women_of_marvel")
-    when 6 then exit_message
+    when "1" then category_menu(Marvel101::Category.find_or_create_by_name("Popular Teams", "http://marvel.com/characters/list/997/titanic_teams"))
+    when "2" then category_menu(Marvel101::Category.find_or_create_by_name("Popular Heroes", "http://marvel.com/characters/list/994/top_marvel_heroes"))
+    when "3" then category_menu(Marvel101::Category.find_or_create_by_name("Popular Villains", "http://marvel.com/characters/list/995/bring_on_the_bad_guys"))
+    when "4" then category_menu(Marvel101::Category.find_or_create_by_name("Featured Characters", "http://marvel.com/characters/browse"))
+    when "5" then category_menu(Marvel101::Category.find_or_create_by_name("The Women of Marvel", "http://marvel.com/characters/list/996/women_of_marvel"))
+    when "exit" then exit_message
     else
       error_message
       main_menu
@@ -28,23 +28,22 @@ class Marvel101::CLI
     puts "3. Popular Villains!"
     puts "4. Marvel's Currently Featured!"
     puts "5. The Women of Marvel!"
-    puts "6. Exit Marvel 101"
+    puts "Exit. Exit Marvel 101"
     puts "Select a number from the options above and we'll get started!"
   end
 
-  def category_menu(category, url)
-    target_category = Marvel101::Category.find_or_create_by_name("#{category}", url)
-    display_category(target_category)
+  def category_menu(category)
+    display_category(category)
     input = gets.chomp
     case input.downcase
     when "main" then main_menu
     when "exit" then exit_message
     else
-      if valid_input?(input, target_category.topics)
-        if target_category.name == "Popular Teams"
-          team_menu(target_category.topics[input.to_i - 1])
+      if valid_input?(input, category.topics)
+        if category.name == "Popular Teams"
+          team_menu(category.topics[input.to_i - 1])
         else
-          character_menu(target_category.topics[input.to_i - 1])
+          character_menu(category.topics[input.to_i - 1])
         end
       else
         error_message
@@ -53,14 +52,14 @@ class Marvel101::CLI
     end
   end
 
-  def display_category(target_category)
-    puts "\n#{target_category.name}? Nice pick!"
-    puts "Here is a list of #{target_category.name}! (Sorry if your favorite didn't make the cut)"
-    puts "-" * 15 + "The #{target_category.name}" + "-" * 15
-    target_category.topics.each.with_index(1) {|topic, index| puts "#{index}. #{topic.name}"}
-    puts "-" * 15 + "-" * "The #{target_category.name}".size + "-" * 15
+  def display_category(category)
+    puts "\n#{category.name}? Nice pick!"
+    puts "Here is a list of #{category.name}! (Sorry if your favorite didn't make the cut)"
+    puts "-" * 15 + "The #{category.name}" + "-" * 15
+    category.topics.each.with_index(1) {|topic, index| puts "#{index}. #{topic.name}"}
+    puts "-" * 15 + "-" * "The #{category.name}".size + "-" * 15
     puts "Select a topic number from the options above to learn more!"
-    options_message(target_category)
+    options_message(category)
   end
 
   def team_menu(team)
