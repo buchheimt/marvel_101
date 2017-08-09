@@ -34,6 +34,19 @@ RSpec.describe "Marvel101::Scraper" do
   end
 
   describe '#scrape_team' do
+    it "retrieves a description if applicable" do
+      scraper = Marvel101::Scraper.new("fixtures/avengers.html")
+      info = scraper.scrape_team
+      description = "Earth's Mightiest Heroes joined forces to take on threats that were too big for any one hero to tackle. With a roster that has included Captain America, Iron Man, Ant-Man, Hulk, Thor, Wasp and dozens more over the years, the Avengers have come to be regarded as Earth's No. 1 team."
+      expect(info[:description]).to eq(description)
+    end
+
+    it "handles no description" do
+      scraper = Marvel101::Scraper.new("fixtures/defenders.html")
+      info = scraper.scrape_team
+      expect(info.include?(:description)).to eq(false)
+    end
+
     it "returns an array of characters when possible" do
       scraper = Marvel101::Scraper.new("fixtures/avengers.html")
       info = scraper.scrape_team
@@ -49,8 +62,31 @@ RSpec.describe "Marvel101::Scraper" do
     it "handles no member info" do
       scraper = Marvel101::Scraper.new("fixtures/defenders.html")
       info = scraper.scrape_team
-      binding.pry
       expect(info.include?(:members)).to eq(false)
+    end
+
+    it "retrieves a marvel 101 link if applicable"  do
+      scraper = Marvel101::Scraper.new("fixtures/avengers.html")
+      info = scraper.scrape_team
+      expect(info[:url_101]).to eq("https://www.youtube.com/watch?v=DLy08aZx5PQ")
+    end
+
+    it "retrieves a marvel wiki link if applicable"  do
+      scraper = Marvel101::Scraper.new("fixtures/avengers.html")
+      info = scraper.scrape_team
+      expect(info[:url_wiki]).to eq("http://marvel.com/universe/Avengers")
+    end
+
+    it "handles no marvel wiki url" do
+      scraper = Marvel101::Scraper.new("fixtures/inhumans.html")
+      info = scraper.scrape_team
+      expect(info.include?(:url_wiki)).to eq(false)
+    end
+
+    it "handles no marvel 101 url" do
+      scraper = Marvel101::Scraper.new("fixtures/defenders.html")
+      info = scraper.scrape_team
+      expect(info.include?(:url_101)).to eq(false)
     end
   end
 
