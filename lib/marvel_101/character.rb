@@ -1,15 +1,17 @@
-class Marvel101::Character
+require_relative 'concerns/memorable'
 
+class Marvel101::Character
+  include Memorable::InstanceMethods
+  extend Memorable::ClassMethods
+  
   attr_accessor :name, :url, :details, :description, :real_name, :height, :weight, :powers, :abilities, :group_affiliations, :first_appearance, :origin, :url_101, :url_wiki
 
   @@all = []
 
   def initialize(name, url)
-    @name = name
-    @url = url
     @scraped = false
     @details = [:real_name, :description, :height, :weight, :powers, :abilities, :group_affiliations, :first_appearance, :origin, :url, :url_101, :url_wiki]
-    @@all << self
+    super
   end
 
   def get_info
@@ -20,11 +22,6 @@ class Marvel101::Character
 
   def scraped?
     @scraped
-  end
-
-  def self.find_or_create_by_name(name, url)
-    search = @@all.detect {|character| character.name == name}
-    search ? search : self.new(name, url)
   end
 
   def self.all
