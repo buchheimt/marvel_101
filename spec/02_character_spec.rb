@@ -77,13 +77,15 @@ RSpec.describe "Marvel101::Character" do
 
   describe "self.find_or_create_by_name" do
     it "finds existing character first if possible" do
+      pre_count = Marvel101::Character.all.size
       new_char = Marvel101::Character.find_or_create_by_name("Nova", "fixtures/nova.html")
-      expect(new_char.scraped?).to eq(true)
+      expect(Marvel101::Character.all.size).to eq(pre_count)
     end
 
     it "creates new character if no team exists" do
+      pre_count = Marvel101::Character.all.size
       new_char = Marvel101::Character.find_or_create_by_name("Batman", "#")
-      expect(new_char.scraped?).to eq(false)
+      expect(Marvel101::Character.all.size).to eq(pre_count + 1)
     end
   end
 

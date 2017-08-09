@@ -76,13 +76,15 @@ RSpec.describe "Marvel101::Team" do
 
   describe "self.find_or_create_by_name" do
     it "finds existing team first if possible" do
+      pre_count = Marvel101::Team.all.size
       new_team = Marvel101::Team.find_or_create_by_name("Defenders", "fixtures/defenders.html")
-      expect(new_team.scraped?).to eq(true)
+      expect(Marvel101::Team.all.size).to eq(pre_count)
     end
 
     it "creates new team if no team exists" do
+      pre_count = Marvel101::Team.all.size
       new_team = Marvel101::Team.find_or_create_by_name("X-Men", "#")
-      expect(new_team.scraped?).to eq(false)
+      expect(Marvel101::Team.all.size).to eq(pre_count + 1)
     end
   end
 

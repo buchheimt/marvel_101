@@ -24,4 +24,18 @@ RSpec.describe "Marvel101::Category" do
     end
   end
 
+  describe "self.find_or_create_by_name" do
+    it "finds existing category first if possible" do
+      pre_count = Marvel101::Category.all.size
+      new_category = Marvel101::Category.find_or_create_by_name("Popular Teams", "fixtures/avengers.html")
+      expect(Marvel101::Category.all.size).to eq(pre_count)
+    end
+
+    it "creates new category if no team exists" do
+      pre_count = Marvel101::Category.all.size
+      new_category = Marvel101::Category.find_or_create_by_name("Sidekicks", "fixtures/avengers.html")
+      expect(Marvel101::Category.all.size).to eq(pre_count + 1)
+    end
+  end
+
 end
