@@ -34,7 +34,7 @@ class Marvel101::Scraper
     members = members_grid.css("div.row-item").collect do |card|
       name = card.css("a.meta-title").text.strip
       url = "http:#{card.css("a.meta-title").attr("href").value}"
-      Marvel101::Character.find_or_create_by_name(name, url)
+      Marvel101::Character.find_or_create_by_name(name, url, )
     end
     details[:members] = members if members.size > 0
     url_101_text = doc.css("div#MarvelVideo101 script").text

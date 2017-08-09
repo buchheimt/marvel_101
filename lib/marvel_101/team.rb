@@ -3,8 +3,9 @@ require_relative 'concerns/memorable'
 class Marvel101::Team
   include Memorable::InstanceMethods
   extend Memorable::ClassMethods
-  
-  attr_accessor :name, :url, :members, :details, :description, :url_101, :url_wiki
+
+  attr_accessor :name, :url, :category, :members, :details, :description, :url_101,
+                :url_wiki
 
   @@all = []
 
@@ -17,6 +18,7 @@ class Marvel101::Team
   def get_info
     attributes = Marvel101::Scraper.new(@url).scrape_team
     attributes.each {|key, value| self.send("#{key}=", value)}
+    members.each {|member| member.category = category} if members
     @scraped = true
   end
 

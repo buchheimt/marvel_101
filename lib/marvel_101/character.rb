@@ -3,8 +3,8 @@ require_relative 'concerns/memorable'
 class Marvel101::Character
   include Memorable::InstanceMethods
   extend Memorable::ClassMethods
-  
-  attr_accessor :name, :url, :details, :description, :real_name, :height, :weight, :powers, :abilities, :group_affiliations, :first_appearance, :origin, :url_101, :url_wiki
+
+  attr_accessor :name, :url, :category, :details, :description, :real_name, :height, :weight, :powers, :abilities, :group_affiliations, :first_appearance, :origin, :url_101, :url_wiki
 
   @@all = []
 

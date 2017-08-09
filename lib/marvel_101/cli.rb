@@ -121,9 +121,9 @@ class Marvel101::CLI
     puts "\n#{character.name} it is!"
     puts "-" * 15 + "#{character.name}" + "-" * 15
     character.details.each do |detail|
-      puts "" if character.send("#{detail}").size >= 80
+      puts "" if character.send("#{detail}") && character.send("#{detail}").size >= 80
       puts "#{detail.to_s.split("_").join(" ").capitalize}: #{character.send("#{detail}")}" if character.send("#{detail}")
-      puts "" if character.send("#{detail}").size >= 80
+      puts "" if character.send("#{detail}") && character.send("#{detail}").size >= 80
     end
     puts "-" * 15 + "-" * "#{character.name}".size + "-" * 15
 
@@ -144,8 +144,8 @@ class Marvel101::CLI
 
   def options_message(topic)
     puts "You can enter 'main' to go back to the main menu or 'exit' to... exit"
-    puts "you can also type 'category' to return to the **insert specific category**." if topic.is_a?(Marvel101::Team) || topic.is_a?(Marvel101::Character)
-    puts "you can also type 'team' to return to the **insert specific team**." if topic.is_a?(Marvel101::Character)
+    puts "you can also type 'category' to return to the #{topic.category.name} menu" if topic.is_a?(Marvel101::Team) || topic.is_a?(Marvel101::Character)
+    puts "you can also type 'team' to return to the **insert specific team** menu" if topic.is_a?(Marvel101::Character)
   end
 
 end
