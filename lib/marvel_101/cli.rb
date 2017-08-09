@@ -34,20 +34,17 @@ class Marvel101::CLI
 
   def category_menu(category)
     display_category(category)
-    input = gets.chomp
-    case input.downcase
+    input = gets.chomp.downcase
+    case input
     when "main" then main_menu
     when "exit" then exit_message
     else
       if valid_input?(input, category.topics)
-        if category.name == "Popular Teams"
-          team_menu(category.topics[input.to_i - 1])
-        else
-          character_menu(category.topics[input.to_i - 1])
-        end
+        topic = category.topics[input.to_i - 1]
+        topic.is_a?(Marvel101::Team) ? team_menu(topic) : character_menu(topic)
       else
         error_message
-        category_menu(category, "url")
+        category_menu(category)
       end
     end
   end
@@ -65,11 +62,11 @@ class Marvel101::CLI
   def team_menu(team)
     team.get_info unless team.scraped?
     display_team(team)
-    input = gets.chomp
-    case input.downcase
+    input = gets.chomp.downcase
+    case input
     when "main" then main_menu
     when "exit" then exit_message
-    when "category" then category_menu(team.category.name, "url")
+    when "category" then category_menu(team.category)
     else
       if valid_input?(input, team.members)
           character_menu(team.members[input.to_i - 1])
@@ -103,7 +100,7 @@ class Marvel101::CLI
     input = gets.chomp
     case input.downcase
     when "main" then main_menu
-    when "category" then category_menu(character.category.name, "url")
+    when "category" then category_menu(character.category)
     when "exit" then exit_message
     else
       if input.downcase == "team"
