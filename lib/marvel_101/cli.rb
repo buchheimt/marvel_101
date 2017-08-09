@@ -42,9 +42,9 @@ class Marvel101::CLI
     else
       if valid_input?(input, target_category.topics)
         if target_category.name == "Popular Teams"
-          team_menu(target_category.topics[input.to_i - 1], target_category)
+          team_menu(target_category.topics[input.to_i - 1])
         else
-          character_menu(target_category.topics[input.to_i - 1], target_category)
+          character_menu(target_category.topics[input.to_i - 1])
         end
       else
         error_message
@@ -63,25 +63,25 @@ class Marvel101::CLI
     options_message(target_category)
   end
 
-  def team_menu(team, category)
+  def team_menu(team)
     team.get_info unless team.scraped?
-    display_team(team, category)
+    display_team(team)
     input = gets.chomp
     case input.downcase
     when "main" then main_menu
     when "exit" then exit_message
-    when "category" then category_menu(category.name, "url")
+    when "category" then category_menu(team.category.name, "url")
     else
       if valid_input?(input, team.members)
-          character_menu(team.members[input.to_i - 1], category, team)
+          character_menu(team.members[input.to_i - 1])
       else
         error_message
-        team_menu(team, category)
+        team_menu(team)
       end
     end
   end
 
-  def display_team(team, category)
+  def display_team(team)
     puts "\nYou selected the #{team.name}, awesome!"
     puts "Here is some more info about the #{team.name}."
     puts "-" * 15 + "The #{team.name}" + "-" * 15
@@ -98,25 +98,25 @@ class Marvel101::CLI
     options_message(team)
   end
 
-  def character_menu(character, category, team = nil)
+  def character_menu(character)
     character.get_info unless character.scraped?
-    display_character(character, category, team)
+    display_character(character)
     input = gets.chomp
     case input.downcase
     when "main" then main_menu
-    when "category" then category_menu(category.name, "url")
+    when "category" then category_menu(character.category.name, "url")
     when "exit" then exit_message
     else
       if input.downcase == "team"
-        team_menu(team, category)
+        team_menu(character.team)
       else
         error_message
-        character_menu(character, category, team)
+        character_menu(character)
       end
     end
   end
 
-  def display_character(character, category, team)
+  def display_character(character)
     # maybe try grouping name/height/weight/abilities then long stuff then origins/urls/etc.
     puts "\n#{character.name} it is!"
     puts "-" * 15 + "#{character.name}" + "-" * 15
@@ -145,7 +145,7 @@ class Marvel101::CLI
   def options_message(topic)
     puts "You can enter 'main' to go back to the main menu or 'exit' to... exit"
     puts "you can also type 'category' to return to the #{topic.category.name} menu" if topic.is_a?(Marvel101::Team) || topic.is_a?(Marvel101::Character)
-    puts "you can also type 'team' to return to the #{topic.team.name} menu" if topic.is_a?(Marvel101::Character)
+    puts "you can also type 'team' to return to the #{topic.team.name} menu" if topic.is_a?(Marvel101::Character) && topic.team
   end
 
 end
