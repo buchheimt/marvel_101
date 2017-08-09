@@ -16,4 +16,8 @@ class Marvel101::Category
     search ? search : self.new(name, url)
   end
 
+  def self.all
+    @@all
+  end
+
 end
