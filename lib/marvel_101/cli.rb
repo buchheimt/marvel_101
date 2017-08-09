@@ -59,8 +59,8 @@ class Marvel101::CLI
     puts "-" * 15 + "The #{target_category.name}" + "-" * 15
     target_category.topics.each.with_index(1) {|topic, index| puts "#{index}. #{topic.name}"}
     puts "-" * 15 + "-" * "The #{target_category.name}".size + "-" * 15
-    puts "Select a category number from the options above to learn more!"
-    puts "You can also enter 'main' to go back to the main menu or 'exit' to... exit"
+    puts "Select a topic number from the options above to learn more!"
+    options_message(target_category)
   end
 
   def team_menu(team, category)
@@ -95,8 +95,7 @@ class Marvel101::CLI
     puts "-" * 15 + "-" * "The #{team.name}".size + "-" * 15
 
     puts "Select a character number from the options above to learn more!"
-    puts "You can also enter 'main' to go back to the main menu or 'exit' to... exit"
-    puts "you can also type 'category' to return to the list of #{category.name}."
+    options_message(team)
   end
 
   def character_menu(character, category, team = nil)
@@ -125,9 +124,7 @@ class Marvel101::CLI
     end
     puts "-" * 15 + "-" * "#{character.name}".size + "-" * 15
 
-    puts "You can enter 'main' to go back to the main menu or 'exit' to... exit"
-    puts "you can also type 'category' to return to the list of #{category.name}."
-    puts "you can also type 'team' to return to the list of #{team.name}." if team
+    options_message(character)
   end
 
   def valid_input?(input, options)
@@ -140,6 +137,12 @@ class Marvel101::CLI
 
   def error_message
     puts "\nSorry, that wasn't a valid option. Let's try again."
+  end
+
+  def options_message(topic)
+    puts "You can enter 'main' to go back to the main menu or 'exit' to... exit"
+    puts "you can also type 'category' to return to the **insert specific category**." if topic.is_a?(Marvel101::Team) || topic.is_a?(Marvel101::Character)
+    puts "you can also type 'team' to return to the **insert specific team**." if topic.is_a?(Marvel101::Character)
   end
 
 end
