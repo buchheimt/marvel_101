@@ -9,4 +9,68 @@ RSpec.describe "Marvel101::Scraper" do
     end
   end
 
+  describe "#scrape_category" do
+    it "returns an array of teams when passed the team page url" do
+      info = Marvel101::Scraper.new('fixtures/teams.html').scrape_category
+      expect(info[0].is_a?(Marvel101::Team)).to eq(true)
+    end
+
+    it "properly instantiates new teams" do
+      new_category = Marvel101::Scraper.new('fixtures/teams.html').scrape_category
+      new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
+      expect(new_category[0].description).to eq(new_team.description)
+    end
+
+    it "returns an array of characters when passed a character url" do
+      info = Marvel101::Scraper.new('fixtures/heroes.html').scrape_category
+      expect(info[0].is_a?(Marvel101::Character)).to eq(true)
+    end
+
+    it "properly instantiates new characters" do
+      new_category = Marvel101::Scraper.new('fixtures/heroes.html').scrape_category
+      new_character = Marvel101::Character.new("Spider-Man", "fixtures/heroes.html")
+      expect(new_category[0].description).to eq(new_character.description)
+    end
+  end
+
+  describe '#scrape_team' do
+    it "returns an array of characters when possible" do
+      scraper = Marvel101::Scraper.new("fixtures/avengers.html")
+      info = scraper.scrape_team
+      expect(info[:members][0].name).to eq("Black Panther")
+    end
+
+    it "properly instantiates new characters" do
+      scraper = Marvel101::Scraper.new("fixtures/avengers.html")
+      info = scraper.scrape_team
+      expect(info[:members][0].is_a?(Marvel101::Character)).to eq(true)
+    end
+
+    it "handles no member info" do
+      scraper = Marvel101::Scraper.new("fixtures/defenders.html")
+      info = scraper.scrape_team
+      binding.pry
+      expect(info.include?(:members)).to eq(false)
+    end
+  end
+
+  describe '#description_scrape' do
+    it "returns the correctly formatted string for teams" do
+      scraper = Marvel101::Scraper.new("fixtures/avengers.html")
+      doc = Nokogiri::HTML(open("fixtures/avengers.html"))
+      result = scraper.description_scrape(doc)
+      description = "Earth's Mightiest Heroes joined forces to take on threats that were too big for any one hero to tackle. With a roster that has included Captain America, Iron Man, Ant-Man, Hulk, Thor, Wasp and dozens more over the years, the Avengers have come to be regarded as Earth's No. 1 team."
+      expect(result).to eq(description)
+    end
+
+    it "returns the correctly formatted string for characters" do
+      scraper = Marvel101::Scraper.new("fixtures/thor.html")
+      doc = Nokogiri::HTML(open("fixtures/thor.html"))
+      result = scraper.description_scrape(doc)
+      description = "As the Norse God of thunder and lightning, Thor wields one of the greatest weapons ever made, the enchanted hammer Mjolnir. While others have described Thor as an over-muscled, oafish imbecile, he's quite smart and compassionate.  He's self-assured, and he would never, ever stop fighting for a worthwhile cause."
+      expect(result).to eq(description)
+    end
+
+  end
+
 end
