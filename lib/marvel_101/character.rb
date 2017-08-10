@@ -2,9 +2,9 @@ require_relative 'topic'
 
 class Marvel101::Character < Marvel101::Topic
 
-  attr_accessor :list, :team, :details, :detail_order, :description
+  attr_accessor :list, :team, :details, :description
 
-  DETAIL_ORDER = [:real_name, :height, :weight, :powers, :abilities,
+  DETAIL_ORDER = [:real_name, :abilities, :height, :weight, :powers,
                   :group_affiliations, :first_appearance, :origin]
 
   def display

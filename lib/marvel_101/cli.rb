@@ -108,7 +108,7 @@ class Marvel101::CLI
 
   def options_message(topic)
     puts "You can enter (M)ain to go back to the main menu or (E)xit to... exit"
-    puts "you can also type (L)ist to return to the #{topic.list.name} menu" if topic.is_a?(Marvel101::Team) || topic.is_a?(Marvel101::Character)
+    puts "you can also type (L)ist to return to the #{topic.list.name} menu" unless topic.is_a?(Marvel101::List)
     puts "you can also type (T)eam to return to the #{topic.team.name} menu" if topic.is_a?(Marvel101::Character) && topic.team
   end
 

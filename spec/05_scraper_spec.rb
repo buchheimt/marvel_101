@@ -144,12 +144,12 @@ RSpec.describe "Marvel101::Scraper" do
     end
   end
 
-  describe '#description_scrape' do
+  describe '#get_description' do
     it "returns the correctly formatted string for teams" do
       new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
       scraper = Marvel101::Scraper.new(new_team)
       scraper.doc = Nokogiri::HTML(open("fixtures/avengers.html"))
-      result = scraper.description_scrape
+      result = scraper.get_description
       description = "Earth's Mightiest Heroes joined forces to take on threats that were too big for any one hero to tackle. With a roster that has included Captain America, Iron Man, Ant-Man, Hulk, Thor, Wasp and dozens more over the years, the Avengers have come to be regarded as Earth's No. 1 team."
       expect(result).to eq(description)
     end
@@ -158,7 +158,7 @@ RSpec.describe "Marvel101::Scraper" do
       new_char = Marvel101::Character.new("Thor", "fixtures/thor.html")
       scraper = Marvel101::Scraper.new(new_char)
       scraper.doc = Nokogiri::HTML(open("fixtures/thor.html"))
-      result = scraper.description_scrape
+      result = scraper.get_description
       description = "As the Norse God of thunder and lightning, Thor wields one of the greatest weapons ever made, the enchanted hammer Mjolnir. While others have described Thor as an over-muscled, oafish imbecile, he's quite smart and compassionate.  He's self-assured, and he would never, ever stop fighting for a worthwhile cause."
       expect(result).to eq(description)
     end

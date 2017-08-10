@@ -33,8 +33,9 @@ class Marvel101::Scraper
   def scrape_topic
     @doc = Nokogiri::HTML(open(@url))
 
-    topic.description = description_scrape if description_scrape
-    topic.is_a?(Marvel101::Team) ? scrape_members : scrape_details
+    get_description
+    topic.is_a?(Marvel101::Team) ? get_members : get_details
+    
     url_101_text = doc.css("div#MarvelVideo101 script").text
     if url_101_text != ""
       topic.urls[:url_101] = "https://www.youtube.com/watch?v=#{url_101_text.match(/videoId: .(\w*)./)[1]}"
@@ -43,14 +44,14 @@ class Marvel101::Scraper
     topic.urls[:url_wiki] = wiki_link.attr("href").value if wiki_link.size > 0
   end
 
-  def description_scrape
+  def get_description
     info = doc.css("div.featured-item-desc p:nth-child(2)")
     if info && info.text.strip != ""
-      info.text.gsub(/\n\s*([ml][oe][rs][es])?/," ").strip
+      topic.description = info.text.gsub(/\n\s*([ml][oe][rs][es])?/," ").strip
     end
   end
 
-  def scrape_members
+  def get_members
     members_grid = doc.css("div.grid-container").first
     topic.members = members_grid.css("div.row-item").collect do |card|
       name = card.css("a.meta-title").text.strip
@@ -62,7 +63,7 @@ class Marvel101::Scraper
     end
   end
 
-  def scrape_details
+  def get_details
     topic.details = {}
     raw_details = doc.css("div.featured-item-meta")
     raw_details.css("div div").each do |raw_detail|
