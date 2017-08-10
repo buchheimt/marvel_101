@@ -14,13 +14,17 @@ class Marvel101::Scraper
       item_cards = doc.css("section#featured-chars div.row-item")
     end
 
-    item_cards.css("div.row-item-text > h5 > a").collect do |link|
+    topic.topics = item_cards.css("div.row-item-text > h5 > a").collect do |link|
       name = link.text.strip
       url = link.attr("href")
       if topic.url.downcase.include?("team")
-        Marvel101::Team.find_or_create_by_name(name, "http:#{url}")
+        Marvel101::Team.find_or_create_by_name(name, "http:#{url}").tap do |team|
+          team.list = topic
+        end
       else
-        Marvel101::Character.find_or_create_by_name(name, "http:#{url}")
+        Marvel101::Character.find_or_create_by_name(name, "http:#{url}").tap do |character|
+          character.list = topic
+        end
       end
     end
   end

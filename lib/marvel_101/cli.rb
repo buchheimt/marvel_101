@@ -29,7 +29,7 @@ class Marvel101::CLI
   def display_main
     puts "\nHere are your primary options:"
     STARTING_PAGES.each.with_index(1) {|page, index| puts "#{index}. #{page[0]}!"}
-    puts "(E)xit. Exit Marvel 101"
+    puts "(E)xit' to... exit"
     puts "Select a number from the options above and we'll get started!"
   end
 
@@ -57,8 +57,8 @@ class Marvel101::CLI
 
   def display_topic(topic)
     break_len = 25
-    puts "\nYou selected the #{topic.name}, awesome!"
-    puts "Here is some more info about the #{topic.name}."
+    puts "\nYou selected #{topic.name}, awesome!"
+    puts "Here is some more info about #{topic.name}."
     puts "-" * break_len + "#{topic.name}" + "-" * break_len
     topic.display
     puts "-" * break_len + "-" * "#{topic.name}".size + "-" * break_len
