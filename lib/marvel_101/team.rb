@@ -2,7 +2,7 @@ require_relative 'topic'
 
 class Marvel101::Team < Marvel101::Topic
 
-  attr_accessor :list, :members,
+  attr_accessor :list, :members
 
   def display
     display_description

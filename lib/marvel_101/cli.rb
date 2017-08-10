@@ -16,8 +16,9 @@ class Marvel101::CLI
   def main_menu
     display_main
     input = gets.chomp.downcase
-    if valid_input?(input, STARTING_PAGES)
-      name, url = STARTING_PAGES[input.to_i - 1]
+    output = valid_input?(input.to_i, STARTING_PAGES)
+    if output
+      name, url = output
       topic_menu(Marvel101::List.find_or_create_by_name(name, url))
     elsif input == "exit" || input == "e"
       exit_message
@@ -38,37 +39,21 @@ class Marvel101::CLI
     display_topic(topic)
     input = gets.chomp.downcase
     case input
-    when "101"
-      if topic.urls.include?(:url_101)
-        open_link(topic.urls[:url_101])
-        topic_menu(topic)
-      else
-        error_message(topic)
-      end
-    when "wiki"
-      if topic.urls.include?(:url_wiki)
-        open_link(topic.urls[:url_wiki])
-        topic_menu(topic)
-      else
-        error_message(topic)
-      end
+    when "101", "wiki"
+      link = "url_#{input}".to_sym
+      open_link(topic.urls["url_#{input}".to_sym]) if topic.urls.include?(link)
+      topic_menu(topic)
     when "show me"
       open_link(topic.urls[:url])
       topic_menu(topic)
-    when "e", "exit"  then exit_message
-    when "m", "main"  then main_menu
-    when "l", "list"
-      topic.list? ? error_message(topic) : topic_menu(topic.list)
+    when "e", "exit" then exit_message
+    when "m", "main" then main_menu
+    when "l", "list" then topic.list? ? error_message(topic) : topic_menu(topic.list)
     when "t", "team"
       topic.char? && topic.team ? topic_menu(topic.team) : error_message(topic)
     else
-      if valid_input?(input, topic) && topic.list?
-        topic_menu(topic.items[input.to_i - 1])
-      elsif valid_input?(input, topic)
-        topic_menu(topic.members[input.to_i - 1])
-      else
-        error_message(topic)
-      end
+      output = valid_input?(input.to_i, topic)
+      output ? topic_menu(output) : error_message(topic)
     end
   end
 
@@ -85,11 +70,11 @@ class Marvel101::CLI
 
   def valid_input?(input, topic)
     if topic.is_a?(Array)
-      input.to_i.between?(1, topic.size)
+      topic[input - 1] if input.between?(1, topic.size)
     elsif topic.list?
-      input.to_i.between?(1, topic.items.size)
+      topic.items[input - 1] if input.between?(1, topic.items.size)
     elsif topic.team?
-      input.to_i.between?(1, topic.members.size)
+      topic.members[input - 1] if input.between?(1, topic.members.size)
     end
   end
 

@@ -72,7 +72,7 @@ class Marvel101::Scraper
   def get_101
     url_101_text = doc.css("div#MarvelVideo101 script").text
     if url_101_text != ""
-      topic.urls[:url_101] = "https://www.youtube.com/watch?v=#{url_101_text.match(/videoId: .(\w*)./)[1]}"
+      topic.urls[:url_101] = "https://www.youtube.com/watch?v=#{url_101_text.match(/videoId: .(-?\w*)./)[1]}"
     end
   end
 
