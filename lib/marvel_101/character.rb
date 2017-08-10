@@ -2,25 +2,28 @@ require_relative 'topic'
 
 class Marvel101::Character < Marvel101::Topic
 
-  attr_accessor :list, :team, :details, :description
+  attr_accessor :list, :team, :details
 
-  DETAIL_ORDER = [:real_name, :abilities, :height, :weight, :powers,
+  DETAIL_ORDER = [:real_name, :height, :weight, :abilities, :powers,
                   :group_affiliations, :first_appearance, :origin]
 
   def display
-    # maybe try grouping name/height/weight/abilities then long stuff then origins/urls/etc.
-    puts "DESCRIPTION: #{description}" if description
+    display_description
+    display_details
+    display_links
+    display_empty_message if empty?
+  end
+
+  def display_details
     DETAIL_ORDER.each do |type|
       puts "#{type.to_s.split("_").join(" ").upcase}: #{details[type]}" if details.include?(type)
       puts "" if details.include?(type) && details[type].size >= 80
     end
-    puts "" if urls.include?(:url_wiki) || urls.include?(:url_101)
-    puts "Marvel Wiki page available! Type 'wiki' to open in browser" if urls.include?(:url_wiki)
-    puts "Marvel 101 video available! Type '101' to open in browser" if urls.include?(:url_101)
-    if empty?
-      puts "Sorry, Marvel doesn't seem to care about #{name}"
-      puts "Type 'show me' to open the page in browser, but don't get your hopes up"
-    end
+  end
+
+  def display_empty_message
+    puts "Sorry, Marvel doesn't seem to care about #{name}"
+    puts "Type 'show me' to open the page in browser, but don't get your hopes up"
   end
 
   def empty?

@@ -1,6 +1,6 @@
 class Marvel101::Topic
 
-  attr_accessor :name, :urls, :scraped
+  attr_accessor :name, :description, :urls, :scraped
 
   @@all = []
 
@@ -15,6 +15,16 @@ class Marvel101::Topic
     scraper = Marvel101::Scraper.new(self)
     self.list? ? scraper.scrape_list : scraper.scrape_topic
     @scraped = true
+  end
+
+  def display_description
+    puts "DESCRIPTION: #{description}" if description
+  end
+
+  def display_links
+    puts "" if urls.size > 1
+    puts "Marvel Wiki page available! Type 'wiki' to open in browser" if urls.include?(:url_wiki)
+    puts "Marvel 101 video available! Type '101' to open in browser" if urls.include?(:url_101)
   end
 
   def list?

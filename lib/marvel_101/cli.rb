@@ -83,13 +83,13 @@ class Marvel101::CLI
     options_message(topic)
   end
 
-  def valid_input?(input, subject)
-    if subject.is_a?(Array)
-      input.to_i.between?(1, subject.size)
-    elsif subject.list?
-      input.to_i.between?(1, subject.items.size)
-    elsif subject.team?
-      input.to_i.between?(1, subject.members.size)
+  def valid_input?(input, topic)
+    if topic.is_a?(Array)
+      input.to_i.between?(1, topic.size)
+    elsif topic.list?
+      input.to_i.between?(1, topic.items.size)
+    elsif topic.team?
+      input.to_i.between?(1, topic.members.size)
     end
   end
 

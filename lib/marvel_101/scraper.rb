@@ -9,8 +9,7 @@ class Marvel101::Scraper
 
   def scrape_list
     get_doc
-    item_cards = get_item_cards
-    get_items(item_cards)
+    get_items(get_item_cards)
   end
 
   def scrape_topic
