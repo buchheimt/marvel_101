@@ -2,19 +2,21 @@ require_relative 'topic'
 
 class Marvel101::Character < Marvel101::Topic
 
-  attr_accessor :list, :team, :details, :description, :real_name,
-                :height, :weight, :powers, :abilities, :group_affiliations, :first_appearance,
-                :origin, :url_101, :url_wiki
+  attr_accessor :list, :team, :details, :detail_order, :description
 
-  DETAILS = [:real_name, :description, :height, :weight, :powers, :abilities,
-              :group_affiliations, :first_appearance, :origin, :url, :url_101, :url_wiki]
+  DETAIL_ORDER = [:real_name, :height, :weight, :powers, :abilities,
+                  :group_affiliations, :first_appearance, :origin]
 
   def display
     # maybe try grouping name/height/weight/abilities then long stuff then origins/urls/etc.
-    DETAILS.each do |detail|
-      puts "" if self.send("#{detail}") && self.send("#{detail}").size >= 80
-      puts "#{detail.to_s.split("_").join(" ").capitalize}: #{self.send("#{detail}")}" if self.send("#{detail}")
-      puts "" if self.send("#{detail}") && self.send("#{detail}").size >= 80
+    puts "Description: #{description}" if description
+    DETAIL_ORDER.each do |type|
+      puts "" if details.include?(type) && details[type].size >= 80
+      puts "#{type.to_s.split("_").join(" ").capitalize}: #{details[type]}" if details.include?(type)
+      puts "" if details.include?(type) && details[type].size >= 80
+    end
+    urls.each do |type, value|
+      puts "#{type.to_s.split("_").join(" ").capitalize}: #{value}"
     end
   end
 end

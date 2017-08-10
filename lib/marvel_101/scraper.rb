@@ -4,10 +4,11 @@ class Marvel101::Scraper
 
   def initialize(topic)
     @topic = topic
+    @url = topic.urls[:url]
   end
 
   def scrape_list
-    @doc = Nokogiri::HTML(open(topic.url))
+    @doc = Nokogiri::HTML(open(@url))
     if doc.css("div#comicsListing div.row-item").size > 0
       item_cards = doc.css("div#comicsListing div.row-item")
     else
@@ -17,7 +18,7 @@ class Marvel101::Scraper
     topic.items = item_cards.css("div.row-item-text > h5 > a").collect do |link|
       name = link.text.strip
       url = link.attr("href")
-      if topic.url.downcase.include?("team")
+      if @url.downcase.include?("team")
         Marvel101::Team.find_or_create_by_name(name, "http:#{url}").tap do |team|
           team.list = topic
         end
@@ -30,16 +31,16 @@ class Marvel101::Scraper
   end
 
   def scrape_topic
-    @doc = Nokogiri::HTML(open(topic.url))
+    @doc = Nokogiri::HTML(open(@url))
 
     topic.description = description_scrape if description_scrape
     topic.is_a?(Marvel101::Team) ? scrape_members : scrape_details
     url_101_text = doc.css("div#MarvelVideo101 script").text
     if url_101_text != ""
-      topic.url_101 = "https://www.youtube.com/watch?v=#{url_101_text.match(/videoId: .(\w*)./)[1]}"
+      topic.urls[:url_101] = "https://www.youtube.com/watch?v=#{url_101_text.match(/videoId: .(\w*)./)[1]}"
     end
     wiki_link = doc.css("div.title-section a.featured-item-notice.primary")
-    topic.url_wiki = wiki_link.attr("href").value if wiki_link.size > 0
+    topic.urls[:url_wiki] = wiki_link.attr("href").value if wiki_link.size > 0
   end
 
   def description_scrape
@@ -62,6 +63,7 @@ class Marvel101::Scraper
   end
 
   def scrape_details
+    topic.details = {}
     raw_details = doc.css("div.featured-item-meta")
     raw_details.css("div div").each do |raw_detail|
       detail = raw_detail.css("strong").text.downcase.strip.split(" ").join("_").to_sym
@@ -70,7 +72,7 @@ class Marvel101::Scraper
       else
         info = raw_detail.css("p:last-child").text
       end
-      topic.send("#{detail}=", info) if raw_detail.css("strong").text.strip != ""
+      topic.details[detail.to_sym] = info
     end
   end
 end

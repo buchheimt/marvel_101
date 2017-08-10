@@ -10,17 +10,12 @@ RSpec.describe "Marvel101::Character" do
 
     it "Initializes with a url"  do
       new_char = Marvel101::Character.new("Thor", "fixtures/thor.html")
-      expect(new_char.url).to eq("fixtures/thor.html")
+      expect(new_char.urls[:url]).to eq("fixtures/thor.html")
     end
 
     it "Initializes with scraped set to false"  do
       new_char = Marvel101::Character.new("Thor", "fixtures/thor.html")
       expect(new_char.scraped).to eq(false)
-    end
-
-    it "Initializes with a details Constant of symbols"  do
-      new_char = Marvel101::Character.new("Thor", "fixtures/thor.html")
-      expect(Marvel101::Character::DETAILS[0]).to eq(:real_name)
     end
 
     it "Adds self to @@all upon initialization"  do
@@ -41,19 +36,19 @@ RSpec.describe "Marvel101::Character" do
       new_char = Marvel101::Character.new("Thor", "fixtures/thor.html")
       new_char.get_info
       abilities = "Thor is trained in the arts of war, being a superbly skilled warrior, highly proficient in hand-to-hand combat, swordsmanship and hammer throwing."
-      expect(new_char.abilities).to eq(abilities)
+      expect(new_char.details[:abilities]).to eq(abilities)
     end
 
     it "retrieves and sets a marvel 101 link applicable"  do
       new_char = Marvel101::Character.new("Thor", "fixtures/thor.html")
       new_char.get_info
-      expect(new_char.url_101).to eq("https://www.youtube.com/watch?v=ZfSBdW6vblc")
+      expect(new_char.urls[:url_101]).to eq("https://www.youtube.com/watch?v=ZfSBdW6vblc")
     end
 
     it "retrieves and sets a marvel wiki link if applicable"  do
       new_char = Marvel101::Character.new("Thor", "fixtures/thor.html")
       new_char.get_info
-      expect(new_char.url_wiki).to eq("http://marvel.com/universe/Thor_(Thor_Odinson)")
+      expect(new_char.urls[:url_wiki]).to eq("http://marvel.com/universe/Thor_(Thor_Odinson)")
     end
 
     it "sets scraped to true" do
@@ -65,13 +60,13 @@ RSpec.describe "Marvel101::Character" do
     it "correctly handles missing info" do
       new_char = Marvel101::Character.new("Nova", "fixtures/nova.html")
       new_char.get_info
-      expect(new_char.url_wiki).to eq(nil)
+      expect(new_char.urls.include?(:url_wiki)).to eq(false)
     end
 
     it "correctly handles available info when some is missing" do
       new_char = Marvel101::Character.new("Nova", "fixtures/nova.html")
       new_char.get_info
-      expect(new_char.url_101).to eq("https://www.youtube.com/watch?v=cFXqrbLXu3M")
+      expect(new_char.urls[:url_101]).to eq("https://www.youtube.com/watch?v=cFXqrbLXu3M")
     end
   end
 

@@ -10,17 +10,12 @@ RSpec.describe "Marvel101::Team" do
 
     it "Initializes with a url"  do
       new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
-      expect(new_team.url).to eq("fixtures/avengers.html")
+      expect(new_team.urls[:url]).to eq("fixtures/avengers.html")
     end
 
     it "Initializes with scraped set to false"  do
       new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
       expect(new_team.scraped).to eq(false)
-    end
-
-    it "Initializes with a details Constant of symbols"  do
-      new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
-      expect(Marvel101::Team::DETAILS[0]).to eq(:description)
     end
 
     it "Adds self to @@all upon initialization"  do
@@ -46,13 +41,13 @@ RSpec.describe "Marvel101::Team" do
     it "retrieves and sets a marvel 101 link applicable"  do
       new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
       new_team.get_info
-      expect(new_team.url_101).to eq("https://www.youtube.com/watch?v=DLy08aZx5PQ")
+      expect(new_team.urls[:url_101]).to eq("https://www.youtube.com/watch?v=DLy08aZx5PQ")
     end
 
     it "retrieves and sets a marvel wiki link if applicable"  do
       new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
       new_team.get_info
-      expect(new_team.url_wiki).to eq("http://marvel.com/universe/Avengers")
+      expect(new_team.urls[:url_wiki]).to eq("http://marvel.com/universe/Avengers")
     end
 
     it "sets scraped to true" do
@@ -64,13 +59,13 @@ RSpec.describe "Marvel101::Team" do
     it "correctly handles missing info" do
       new_team = Marvel101::Team.new("Defenders", "fixtures/defenders.html")
       new_team.get_info
-      expect(new_team.url_101).to eq(nil)
+      expect(new_team.urls[:url_101]).to eq(nil)
     end
 
     it "correctly handles available info when some is missing" do
       new_team = Marvel101::Team.new("Defenders", "fixtures/defenders.html")
       new_team.get_info
-      expect(new_team.url_wiki).to eq("http://marvel.com/universe/Defenders")
+      expect(new_team.urls[:url_wiki]).to eq("http://marvel.com/universe/Defenders")
     end
 
     it "sets Characters' list to self.list"  do

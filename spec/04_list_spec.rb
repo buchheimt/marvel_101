@@ -10,7 +10,7 @@ RSpec.describe "Marvel101::List" do
 
     it "Initializes a List with a url"  do
       new_list = Marvel101::List.new("Popular Teams", "fixtures/teams.html")
-      expect(new_list.url).to eq("fixtures/teams.html")
+      expect(new_list.urls[:url]).to eq("fixtures/teams.html")
     end
 
     it "Adds self to @@all upon initialization"  do

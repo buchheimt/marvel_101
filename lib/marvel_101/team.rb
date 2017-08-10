@@ -2,14 +2,12 @@ require_relative 'topic'
 
 class Marvel101::Team < Marvel101::Topic
 
-  attr_accessor :list, :members, :details, :description,
-                :url_101, :url_wiki
-
-  DETAILS = [:description, :url, :url_101, :url_wiki]
+  attr_accessor :list, :members, :description
 
   def display
-    DETAILS.each do |detail|
-      puts "#{detail.to_s.split("_").join(" ").capitalize}: #{self.send("#{detail}")}" if self.send("#{detail}")
+    puts "Description: #{description}" if description
+    urls.each do |type, value|
+      puts "#{type.to_s.split("_").join(" ").capitalize}: #{value}"
     end
     puts "Core Members:" if members.size > 0
     members.each.with_index(1) {|member, index| puts "    #{index}. #{member.name}"}

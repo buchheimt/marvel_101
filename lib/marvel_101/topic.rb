@@ -1,12 +1,12 @@
 class Marvel101::Topic
 
-  attr_accessor :name, :url, :scraped
+  attr_accessor :name, :urls, :scraped
 
   @@all = []
 
   def initialize(name, url)
     @name = name
-    @url = url
+    @urls = {url: url}
     @scraped = false
     @@all << self
   end
