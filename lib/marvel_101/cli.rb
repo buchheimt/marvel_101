@@ -19,7 +19,7 @@ class Marvel101::CLI
     if valid_input?(input, STARTING_PAGES)
       name, url = STARTING_PAGES[input.to_i - 1]
       topic_menu(Marvel101::List.find_or_create_by_name(name, url))
-    elsif input == "exit"
+    elsif input == "exit" || input == "e"
       exit_message
     else
       error_message("main")
@@ -38,11 +38,12 @@ class Marvel101::CLI
     display_topic(topic)
     input = gets.chomp.downcase
     case input
-    when "exit" then exit_message
-    when "main" then main_menu
-    when "l", "list" then topic_menu(topic.list) unless topic.is_a?(Marvel101::List)
+    when "e", "exit"  then exit_message
+    when "m", "main"  then main_menu
+    when "l", "list"
+      topic.is_a?(Marvel101::List) ? error_message(topic) : topic_menu(topic.list)
     when "t", "team"
-      topic.team && topic.is_a?(Marvel101::Character) ? topic_menu(topic.team) : error_message(topic)
+      topic.is_a?(Marvel101::Character) && topic.team ? topic_menu(topic.team) : error_message(topic)
     else
       if valid_input?(input, topic) && topic.is_a?(Marvel101::List)
         topic_menu(topic.topics[input.to_i - 1])
@@ -57,9 +58,9 @@ class Marvel101::CLI
   def display_topic(topic)
     puts "\nYou selected the #{topic.name}, awesome!"
     puts "Here is some more info about the #{topic.name}."
-    puts "-" * 15 + "The #{topic.name}" + "-" * 15
+    puts "-" * 20 + "The #{topic.name}" + "-" * 20
     topic.display
-    puts "-" * 15 + "-" * "The #{topic.name}".size + "-" * 15
+    puts "-" * 20 + "-" * "The #{topic.name}".size + "-" * 20
     puts "Select a number from the options above to learn more!"
     options_message(topic)
   end
@@ -84,9 +85,9 @@ class Marvel101::CLI
   end
 
   def options_message(topic)
-    puts "You can enter 'main' to go back to the main menu or 'exit' to... exit"
-    puts "you can also type 'list' to return to the #{topic.list.name} menu" if topic.is_a?(Marvel101::Team) || topic.is_a?(Marvel101::Character)
-    puts "you can also type 'team' to return to the #{topic.team.name} menu" if topic.is_a?(Marvel101::Character) && topic.team
+    puts "You can enter '(M)ain' to go back to the main menu or '(E)xit' to... exit"
+    puts "you can also type '(L)ist' to return to the #{topic.list.name} menu" if topic.is_a?(Marvel101::Team) || topic.is_a?(Marvel101::Character)
+    puts "you can also type '(T)eam' to return to the #{topic.team.name} menu" if topic.is_a?(Marvel101::Character) && topic.team
   end
 
 end
