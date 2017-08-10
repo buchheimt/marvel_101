@@ -46,7 +46,7 @@ class Marvel101::CLI
       topic.is_a?(Marvel101::Character) && topic.team ? topic_menu(topic.team) : error_message(topic)
     else
       if valid_input?(input, topic) && topic.is_a?(Marvel101::List)
-        topic_menu(topic.topics[input.to_i - 1])
+        topic_menu(topic.items[input.to_i - 1])
       elsif valid_input?(input, topic)
         topic_menu(topic.members[input.to_i - 1])
       else
@@ -68,7 +68,7 @@ class Marvel101::CLI
 
   def valid_input?(input, subject)
     if subject.is_a?(Marvel101::List)
-      input.to_i.between?(1, subject.topics.size)
+      input.to_i.between?(1, subject.items.size)
     elsif subject.is_a?(Marvel101::Team)
       input.to_i.between?(1, subject.members.size)
     elsif subject.is_a?(Array)

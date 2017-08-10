@@ -24,25 +24,25 @@ RSpec.describe "Marvel101::List" do
     it "Initializes with 'Popular Teams' an array of scraped topics"  do
       new_list = Marvel101::List.new("Popular Teams", "fixtures/teams.html")
       new_list.get_info
-      expect(new_list.topics[0].name).to eq("Avengers")
+      expect(new_list.items[0].name).to eq("Avengers")
     end
 
     it "Initializes with 'Popular Heroes' an array of scraped topics"  do
       new_list = Marvel101::List.new("Popular Heroes", "fixtures/heroes.html")
       new_list.get_info
-      expect(new_list.topics[0].name).to eq("Spider-Man")
+      expect(new_list.items[0].name).to eq("Spider-Man")
     end
 
     it "Initializes with 'Featured Characters' an array of scraped topics"  do
       new_list = Marvel101::List.new("Featured Characters", "fixtures/featured.html")
       new_list.get_info
-      expect(new_list.topics[0].name).to eq("Black Panther")
+      expect(new_list.items[0].name).to eq("Black Panther")
     end
 
     it "sets topics' list to self"  do
       new_list = Marvel101::List.new("Popular Teams", "fixtures/teams.html")
       new_list.get_info
-      expect(new_list.topics[0].list).to eq(new_list)
+      expect(new_list.items[0].list).to eq(new_list)
     end
   end
 

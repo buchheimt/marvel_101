@@ -14,7 +14,7 @@ class Marvel101::Scraper
       item_cards = doc.css("section#featured-chars div.row-item")
     end
 
-    topic.topics = item_cards.css("div.row-item-text > h5 > a").collect do |link|
+    topic.items = item_cards.css("div.row-item-text > h5 > a").collect do |link|
       name = link.text.strip
       url = link.attr("href")
       if topic.url.downcase.include?("team")

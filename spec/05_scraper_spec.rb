@@ -14,27 +14,27 @@ RSpec.describe "Marvel101::Scraper" do
     it "sets topics to an array of teams when passed the team page url" do
       new_list = Marvel101::List.new("Popular Teams", "fixtures/teams.html")
       Marvel101::Scraper.new(new_list).scrape_list
-      expect(new_list.topics[0].is_a?(Marvel101::Team)).to eq(true)
+      expect(new_list.items[0].is_a?(Marvel101::Team)).to eq(true)
     end
 
     it "properly instantiates new teams" do
       new_list = Marvel101::List.new("Popular Teams", "fixtures/teams.html")
       new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
       Marvel101::Scraper.new(new_list).scrape_list
-      expect(new_list.topics[0].description).to eq(new_team.description)
+      expect(new_list.items[0].description).to eq(new_team.description)
     end
 
     it "sets topics to an array of characters when passed a character url" do
       new_list = Marvel101::List.new("Popular Heroes", "fixtures/heroes.html")
       Marvel101::Scraper.new(new_list).scrape_list
-      expect(new_list.topics[0].is_a?(Marvel101::Character)).to eq(true)
+      expect(new_list.items[0].is_a?(Marvel101::Character)).to eq(true)
     end
 
     it "properly instantiates new characters" do
       new_list = Marvel101::List.new("Popular Heroes", "fixtures/heroes.html")
       new_character = Marvel101::Character.new("Spider-Man", "fixtures/heroes.html")
       Marvel101::Scraper.new(new_list).scrape_list
-      expect(new_list.topics[0].description).to eq(new_character.description)
+      expect(new_list.items[0].description).to eq(new_character.description)
     end
   end
 

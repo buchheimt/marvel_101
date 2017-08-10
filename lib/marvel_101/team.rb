@@ -1,23 +1,13 @@
-require_relative 'concerns/memorable'
+require_relative 'topic'
 
-class Marvel101::Team
-  include Memorable::InstanceMethods
-  extend Memorable::ClassMethods
+class Marvel101::Team < Marvel101::Topic
 
-  attr_accessor :name, :url, :list, :scraped, :members, :details, :description,
+  attr_accessor :list, :members, :details, :description,
                 :url_101, :url_wiki
 
-  @@all = []
-
   def initialize(name, url)
-    @scraped = false
     @details = [:description, :url, :url_101, :url_wiki]
     super
-  end
-
-  def get_info
-    Marvel101::Scraper.new(self).scrape_topic
-    @scraped = true
   end
 
   def display
@@ -28,9 +18,5 @@ class Marvel101::Team
       puts "Core Members:"
       members.each.with_index(1) {|member, index| puts "    #{index}. #{member.name}"}
     end
-  end
-
-  def self.all
-    @@all
   end
 end

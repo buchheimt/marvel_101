@@ -1,25 +1,15 @@
-require_relative 'concerns/memorable'
+require_relative 'topic'
 
-class Marvel101::Character
-  include Memorable::InstanceMethods
-  extend Memorable::ClassMethods
+class Marvel101::Character < Marvel101::Topic
 
-  attr_accessor :name, :url, :list, :team, :scraped, :details, :description, :real_name,
+  attr_accessor :list, :team, :details, :description, :real_name,
                 :height, :weight, :powers, :abilities, :group_affiliations, :first_appearance,
                 :origin, :url_101, :url_wiki
 
-  @@all = []
-
   def initialize(name, url)
-    @scraped = false
     @details = [:real_name, :description, :height, :weight, :powers, :abilities,
                 :group_affiliations, :first_appearance, :origin, :url, :url_101, :url_wiki]
     super
-  end
-
-  def get_info
-    Marvel101::Scraper.new(self).scrape_topic
-    @scraped = true
   end
 
   def display
@@ -29,9 +19,5 @@ class Marvel101::Character
       puts "#{detail.to_s.split("_").join(" ").capitalize}: #{self.send("#{detail}")}" if self.send("#{detail}")
       puts "" if self.send("#{detail}") && self.send("#{detail}").size >= 80
     end
-  end
-
-  def self.all
-    @@all
   end
 end
