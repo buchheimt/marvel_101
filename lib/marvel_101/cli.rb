@@ -79,7 +79,7 @@ class Marvel101::CLI
     puts "-" * break_len + "#{topic.name}" + "-" * break_len
     topic.display
     puts "-" * break_len + "-" * "#{topic.name}".size + "-" * break_len
-    puts "Select a number from the options above to learn more!"
+    puts "Select a number from the options above to learn more!" unless topic.is_a?(Marvel101::Character)
     options_message(topic)
   end
 

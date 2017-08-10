@@ -19,7 +19,7 @@ class Marvel101::Scraper
       name = link.text.strip
       url = link.attr("href")
       if @url.downcase.include?("team")
-        Marvel101::Team.find_or_create_by_name(name, "http:#{url}").tap do |team|
+        Marvel101::Team.find_or_create_by_name("The #{name}", "http:#{url}").tap do |team|
           team.list = topic
         end
       else

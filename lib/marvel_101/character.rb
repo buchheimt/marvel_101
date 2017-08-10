@@ -24,6 +24,6 @@ class Marvel101::Character < Marvel101::Topic
   end
 
   def empty?
-    !description || details.size <= 0 || urls.size <= 1
+    !description && details.size <= 0 && urls.size <= 1
   end
 end
