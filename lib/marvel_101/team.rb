@@ -4,8 +4,8 @@ class Marvel101::Team
   include Memorable::InstanceMethods
   extend Memorable::ClassMethods
 
-  attr_accessor :name, :url, :list, :members, :details, :description, :url_101,
-                :url_wiki
+  attr_accessor :name, :url, :list, :scraped, :members, :details, :description,
+                :url_101, :url_wiki
 
   @@all = []
 
@@ -35,10 +35,6 @@ class Marvel101::Team
       puts "Core Members:"
       members.each.with_index(1) {|member, index| puts "    #{index}. #{member.name}"}
     end
-  end
-
-  def scraped?
-    @scraped
   end
 
   def self.all

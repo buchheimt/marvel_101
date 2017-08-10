@@ -29,12 +29,12 @@ class Marvel101::CLI
   def display_main
     puts "\nHere are your primary options:"
     STARTING_PAGES.each.with_index(1) {|page, index| puts "#{index}. #{page[0]}!"}
-    puts "Exit. Exit Marvel 101"
+    puts "(E)xit. Exit Marvel 101"
     puts "Select a number from the options above and we'll get started!"
   end
 
   def topic_menu(topic)
-    topic.get_info unless topic.scraped?
+    topic.get_info unless topic.scraped
     display_topic(topic)
     input = gets.chomp.downcase
     case input
@@ -56,11 +56,12 @@ class Marvel101::CLI
   end
 
   def display_topic(topic)
+    break_len = 25
     puts "\nYou selected the #{topic.name}, awesome!"
     puts "Here is some more info about the #{topic.name}."
-    puts "-" * 20 + "The #{topic.name}" + "-" * 20
+    puts "-" * break_len + "#{topic.name}" + "-" * break_len
     topic.display
-    puts "-" * 20 + "-" * "The #{topic.name}".size + "-" * 20
+    puts "-" * break_len + "-" * "#{topic.name}".size + "-" * break_len
     puts "Select a number from the options above to learn more!"
     options_message(topic)
   end

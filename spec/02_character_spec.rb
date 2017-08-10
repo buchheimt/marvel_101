@@ -15,7 +15,7 @@ RSpec.describe "Marvel101::Character" do
 
     it "Initializes with scraped set to false"  do
       new_char = Marvel101::Character.new("Thor", "fixtures/thor.html")
-      expect(new_char.scraped?).to eq(false)
+      expect(new_char.scraped).to eq(false)
     end
 
     it "Initializes with a details array of symbols"  do
@@ -59,7 +59,7 @@ RSpec.describe "Marvel101::Character" do
     it "sets scraped to true" do
       new_char = Marvel101::Character.new("Thor", "fixtures/thor.html")
       new_char.get_info
-      expect(new_char.scraped?).to eq(true)
+      expect(new_char.scraped).to eq(true)
     end
 
     it "correctly handles missing info" do

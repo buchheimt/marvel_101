@@ -15,7 +15,7 @@ RSpec.describe "Marvel101::Team" do
 
     it "Initializes with scraped set to false"  do
       new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
-      expect(new_team.scraped?).to eq(false)
+      expect(new_team.scraped).to eq(false)
     end
 
     it "Initializes with a details array of symbols"  do
@@ -58,7 +58,7 @@ RSpec.describe "Marvel101::Team" do
     it "sets scraped to true" do
       new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
       new_team.get_info
-      expect(new_team.scraped?).to eq(true)
+      expect(new_team.scraped).to eq(true)
     end
 
     it "correctly handles missing info" do

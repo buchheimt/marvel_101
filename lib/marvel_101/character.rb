@@ -4,7 +4,9 @@ class Marvel101::Character
   include Memorable::InstanceMethods
   extend Memorable::ClassMethods
 
-  attr_accessor :name, :url, :list, :team, :details, :description, :real_name, :height, :weight, :powers, :abilities, :group_affiliations, :first_appearance, :origin, :url_101, :url_wiki
+  attr_accessor :name, :url, :list, :team, :scraped, :details, :description, :real_name,
+                :height, :weight, :powers, :abilities, :group_affiliations, :first_appearance,
+                :origin, :url_101, :url_wiki
 
   @@all = []
 
@@ -27,10 +29,6 @@ class Marvel101::Character
       puts "#{detail.to_s.split("_").join(" ").capitalize}: #{self.send("#{detail}")}" if self.send("#{detail}")
       puts "" if self.send("#{detail}") && self.send("#{detail}").size >= 80
     end
-  end
-
-  def scraped?
-    @scraped
   end
 
   def self.all
