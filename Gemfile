@@ -7,3 +7,4 @@ gemspec
 
 gem 'nokogiri'
 gem 'pry'
+gem 'launchy'

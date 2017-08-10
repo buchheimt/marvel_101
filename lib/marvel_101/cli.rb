@@ -29,7 +29,7 @@ class Marvel101::CLI
   def display_main
     puts "\nHere are your primary options:"
     STARTING_PAGES.each.with_index(1) {|page, index| puts "#{index}. #{page[0]}!"}
-    puts "(E)xit' to... exit"
+    puts "You can also enter (E)xit to... exit"
     puts "Select a number from the options above and we'll get started!"
   end
 
@@ -38,6 +38,23 @@ class Marvel101::CLI
     display_topic(topic)
     input = gets.chomp.downcase
     case input
+    when "101"
+      if topic.urls.include?(:url_101)
+        open_link(topic.urls[:url_101])
+        topic_menu(topic)
+      else
+        error_message(topic)
+      end
+    when "wiki"
+      if topic.urls.include?(:url_wiki)
+        open_link(topic.urls[:url_wiki])
+        topic_menu(topic)
+      else
+        error_message(topic)
+      end
+    when "show me"
+      open_link(topic.urls[:url])
+      topic_menu(topic)
     when "e", "exit"  then exit_message
     when "m", "main"  then main_menu
     when "l", "list"
@@ -76,6 +93,10 @@ class Marvel101::CLI
     end
   end
 
+  def open_link(url)
+    Launchy.open(url)
+  end
+
   def exit_message
     puts "\nOh ok, well have a super day!"
   end
@@ -86,9 +107,9 @@ class Marvel101::CLI
   end
 
   def options_message(topic)
-    puts "You can enter '(M)ain' to go back to the main menu or '(E)xit' to... exit"
-    puts "you can also type '(L)ist' to return to the #{topic.list.name} menu" if topic.is_a?(Marvel101::Team) || topic.is_a?(Marvel101::Character)
-    puts "you can also type '(T)eam' to return to the #{topic.team.name} menu" if topic.is_a?(Marvel101::Character) && topic.team
+    puts "You can enter (M)ain to go back to the main menu or (E)xit to... exit"
+    puts "you can also type (L)ist to return to the #{topic.list.name} menu" if topic.is_a?(Marvel101::Team) || topic.is_a?(Marvel101::Character)
+    puts "you can also type (T)eam to return to the #{topic.team.name} menu" if topic.is_a?(Marvel101::Character) && topic.team
   end
 
 end
