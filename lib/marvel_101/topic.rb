@@ -13,8 +13,20 @@ class Marvel101::Topic
 
   def get_info
     scraper = Marvel101::Scraper.new(self)
-    self.is_a?(Marvel101::List) ? scraper.scrape_list : scraper.scrape_topic
+    self.list? ? scraper.scrape_list : scraper.scrape_topic
     @scraped = true
+  end
+
+  def list?
+    self.is_a?(Marvel101::List)
+  end
+
+  def team?
+    self.is_a?(Marvel101::Team)
+  end
+
+  def char?
+    self.is_a?(Marvel101::Character)
   end
 
   def self.find_or_create_by_name(name, url)
@@ -25,5 +37,4 @@ class Marvel101::Topic
   def self.all
     @@all
   end
-
 end

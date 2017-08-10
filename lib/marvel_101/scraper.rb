@@ -16,17 +16,18 @@ class Marvel101::Scraper
   def scrape_topic
     get_doc
     get_description
-    topic.is_a?(Marvel101::Team) ? get_members : get_details
+    topic.team? ? get_members : get_details
     get_101
     get_wiki
   end
 
+  def get_doc
+    @doc = Nokogiri::HTML(open(@url))
+  end
+
   def get_item_cards
-    if doc.css("div#comicsListing div.row-item").size > 0
-      item_cards = doc.css("div#comicsListing div.row-item")
-    else
-      item_cards = doc.css("section#featured-chars div.row-item")
-    end
+    item_cards = doc.css("div#comicsListing div.row-item")
+    item_cards.size > 0 ? item_cards : doc.css("section#featured-chars div.row-item")
   end
 
   def get_items(item_cards)
@@ -38,10 +39,6 @@ class Marvel101::Scraper
         Marvel101::Character.find_or_create_by_name(name, "http:#{url}").tap {|char| char.list = topic}
       end
     end
-  end
-
-  def get_doc
-    @doc = Nokogiri::HTML(open(@url))
   end
 
   def get_description
@@ -57,8 +54,7 @@ class Marvel101::Scraper
       name = card.css("a.meta-title").text.strip
       url = "http:#{card.css("a.meta-title").attr("href").value}"
       Marvel101::Character.find_or_create_by_name(name, url).tap do |member|
-        member.list = topic.list
-        member.team = topic
+        member.list, member.team = topic.list, topic
       end
     end
   end
@@ -68,11 +64,8 @@ class Marvel101::Scraper
     raw_details = doc.css("div.featured-item-meta")
     raw_details.css("div div").each do |raw_detail|
       detail = raw_detail.css("strong").text.downcase.strip.split(" ").join("_").to_sym
-      if raw_detail.css("p:last-child span").text.strip != ""
-        info = raw_detail.css("p:last-child span").text
-      else
-        info = raw_detail.css("p:last-child").text
-      end
+      info = raw_detail.css("p:last-child span").text.strip
+      info != "" ? info : info = raw_detail.css("p:last-child").text
       topic.details[detail.to_sym] = info
     end
   end

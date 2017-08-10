@@ -58,11 +58,11 @@ class Marvel101::CLI
     when "e", "exit"  then exit_message
     when "m", "main"  then main_menu
     when "l", "list"
-      topic.is_a?(Marvel101::List) ? error_message(topic) : topic_menu(topic.list)
+      topic.list? ? error_message(topic) : topic_menu(topic.list)
     when "t", "team"
-      topic.is_a?(Marvel101::Character) && topic.team ? topic_menu(topic.team) : error_message(topic)
+      topic.char? && topic.team ? topic_menu(topic.team) : error_message(topic)
     else
-      if valid_input?(input, topic) && topic.is_a?(Marvel101::List)
+      if valid_input?(input, topic) && topic.list?
         topic_menu(topic.items[input.to_i - 1])
       elsif valid_input?(input, topic)
         topic_menu(topic.members[input.to_i - 1])
@@ -79,17 +79,17 @@ class Marvel101::CLI
     puts "-" * break_len + "#{topic.name}" + "-" * break_len
     topic.display
     puts "-" * break_len + "-" * "#{topic.name}".size + "-" * break_len
-    puts "Select a number from the options above to learn more!" unless topic.is_a?(Marvel101::Character)
+    puts "Select a number from the options above to learn more!" unless topic.char?
     options_message(topic)
   end
 
   def valid_input?(input, subject)
-    if subject.is_a?(Marvel101::List)
-      input.to_i.between?(1, subject.items.size)
-    elsif subject.is_a?(Marvel101::Team)
-      input.to_i.between?(1, subject.members.size)
-    elsif subject.is_a?(Array)
+    if subject.is_a?(Array)
       input.to_i.between?(1, subject.size)
+    elsif subject.list?
+      input.to_i.between?(1, subject.items.size)
+    elsif subject.team?
+      input.to_i.between?(1, subject.members.size)
     end
   end
 
@@ -108,8 +108,7 @@ class Marvel101::CLI
 
   def options_message(topic)
     puts "You can enter (M)ain to go back to the main menu or (E)xit to... exit"
-    puts "you can also type (L)ist to return to the #{topic.list.name} menu" unless topic.is_a?(Marvel101::List)
-    puts "you can also type (T)eam to return to the #{topic.team.name} menu" if topic.is_a?(Marvel101::Character) && topic.team
+    puts "you can also type (L)ist to return to the #{topic.list.name} menu" unless topic.list?
+    puts "you can also type (T)eam to return to the #{topic.team.name} menu" if topic.char? && topic.team
   end
-
 end
