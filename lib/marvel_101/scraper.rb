@@ -8,45 +8,45 @@ class Marvel101::Scraper
   end
 
   def scrape_list
-    @doc = Nokogiri::HTML(open(@url))
+    get_doc
+    item_cards = get_item_cards
+    get_items(item_cards)
+  end
+
+  def scrape_topic
+    get_doc
+    get_description
+    topic.is_a?(Marvel101::Team) ? get_members : get_details
+    get_101
+    get_wiki
+  end
+
+  def get_item_cards
     if doc.css("div#comicsListing div.row-item").size > 0
       item_cards = doc.css("div#comicsListing div.row-item")
     else
       item_cards = doc.css("section#featured-chars div.row-item")
     end
+  end
 
+  def get_items(item_cards)
     topic.items = item_cards.css("div.row-item-text > h5 > a").collect do |link|
-      name = link.text.strip
-      url = link.attr("href")
+      name, url = link.text.strip, link.attr("href")
       if @url.downcase.include?("team")
-        Marvel101::Team.find_or_create_by_name("The #{name}", "http:#{url}").tap do |team|
-          team.list = topic
-        end
+        Marvel101::Team.find_or_create_by_name("The #{name}", "http:#{url}").tap {|team| team.list = topic}
       else
-        Marvel101::Character.find_or_create_by_name(name, "http:#{url}").tap do |character|
-          character.list = topic
-        end
+        Marvel101::Character.find_or_create_by_name(name, "http:#{url}").tap {|char| char.list = topic}
       end
     end
   end
 
-  def scrape_topic
+  def get_doc
     @doc = Nokogiri::HTML(open(@url))
-
-    get_description
-    topic.is_a?(Marvel101::Team) ? get_members : get_details
-    
-    url_101_text = doc.css("div#MarvelVideo101 script").text
-    if url_101_text != ""
-      topic.urls[:url_101] = "https://www.youtube.com/watch?v=#{url_101_text.match(/videoId: .(\w*)./)[1]}"
-    end
-    wiki_link = doc.css("div.title-section a.featured-item-notice.primary")
-    topic.urls[:url_wiki] = wiki_link.attr("href").value if wiki_link.size > 0
   end
 
   def get_description
     info = doc.css("div.featured-item-desc p:nth-child(2)")
-    if info && info.text.strip != ""
+    if info.text.strip != ""
       topic.description = info.text.gsub(/\n\s*([ml][oe][rs][es])?/," ").strip
     end
   end
@@ -75,5 +75,17 @@ class Marvel101::Scraper
       end
       topic.details[detail.to_sym] = info
     end
+  end
+
+  def get_101
+    url_101_text = doc.css("div#MarvelVideo101 script").text
+    if url_101_text != ""
+      topic.urls[:url_101] = "https://www.youtube.com/watch?v=#{url_101_text.match(/videoId: .(\w*)./)[1]}"
+    end
+  end
+
+  def get_wiki
+    wiki_link = doc.css("div.title-section a.featured-item-notice.primary")
+    topic.urls[:url_wiki] = wiki_link.attr("href").value if wiki_link.size > 0
   end
 end
