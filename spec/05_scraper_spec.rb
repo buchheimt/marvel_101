@@ -95,68 +95,68 @@ RSpec.describe "Marvel101::Scraper" do
     end
 
     it "retrieves a description for a character if applicable" do
-      new_char = Marvel101::Character("Thor", "fixtures/thor.html")
-      Marvel101::Scraper.new(new_char)
+      new_char = Marvel101::Character.new("Thor", "fixtures/thor.html")
+      Marvel101::Scraper.new(new_char).scrape_topic
       description = "As the Norse God of thunder and lightning, Thor wields one of the greatest weapons ever made, the enchanted hammer Mjolnir. While others have described Thor as an over-muscled, oafish imbecile, he's quite smart and compassionate.  He's self-assured, and he would never, ever stop fighting for a worthwhile cause."
       expect(new_char.description).to eq(description)
     end
 
     it "handles no description for a character" do
-      new_char = Marvel101::Character("Gambit", "fixtures/gambit.html")
-      Marvel101::Scraper.new(new_char)
+      new_char = Marvel101::Character.new("Gambit", "fixtures/gambit.html")
+      Marvel101::Scraper.new(new_char).scrape_topic
       expect(new_char.description).to eq(nil)
     end
 
-    it "retrieves a marvel 101 link if applicable"  do
-      scraper = Marvel101::Scraper.new("fixtures/thor.html")
-      info = scraper.scrape_character
-      expect(info[:url_101]).to eq("https://www.youtube.com/watch?v=ZfSBdW6vblc")
+    it "retrieves a marvel 101 link for a character if applicable"  do
+      new_char = Marvel101::Character.new("Thor", "fixtures/thor.html")
+      Marvel101::Scraper.new(new_char).scrape_topic
+      expect(new_char.url_101).to eq("https://www.youtube.com/watch?v=ZfSBdW6vblc")
     end
 
-    it "retrieves a marvel wiki link if applicable"  do
-      scraper = Marvel101::Scraper.new("fixtures/thor.html")
-      info = scraper.scrape_character
-      expect(info[:url_wiki]).to eq("http://marvel.com/universe/Thor_(Thor_Odinson)")
+    it "retrieves a marvel wiki link for a character if applicable"  do
+      new_char = Marvel101::Character.new("Thor", "fixtures/thor.html")
+      Marvel101::Scraper.new(new_char).scrape_topic
+      expect(new_char.url_wiki).to eq("http://marvel.com/universe/Thor_(Thor_Odinson)")
     end
 
-    it "handles no marvel wiki url" do
-      scraper = Marvel101::Scraper.new("fixtures/gambit.html")
-      info = scraper.scrape_character
-      expect(info.include?(:url_wiki)).to eq(false)
+    it "handles no marvel wiki url for a character" do
+      new_char = Marvel101::Character.new("Gambit", "fixtures/gambit.html")
+      Marvel101::Scraper.new(new_char).scrape_topic
+      expect(new_char.url_wiki).to eq(nil)
     end
 
-    it "handles no marvel 101 url" do
-      scraper = Marvel101::Scraper.new("fixtures/gambit.html")
-      info = scraper.scrape_character
-      expect(info.include?(:url_101)).to eq(false)
+    it "handles no marvel 101 url for a character" do
+      new_char = Marvel101::Character.new("Gambit", "fixtures/gambit.html")
+      Marvel101::Scraper.new(new_char).scrape_topic
+      expect(new_char.url_101).to eq(nil)
     end
 
     it "retrieves info for mass assignment" do
-      scraper = Marvel101::Scraper.new("fixtures/thor.html")
-      info = scraper.scrape_character
-      expect(info[:real_name]).to eq("Thor Odinson")
+      new_char = Marvel101::Character.new("Thor", "fixtures/thor.html")
+      Marvel101::Scraper.new(new_char).scrape_topic
+      expect(new_char.real_name).to eq("Thor Odinson")
     end
 
     it "handles missing mass assignment info" do
-      scraper = Marvel101::Scraper.new("fixtures/nova.html")
-      info = scraper.scrape_character
-      expect(info.include?(:real_name)).to eq(false)
+      new_char = Marvel101::Character.new("Nova", "fixtures/nova.html")
+      Marvel101::Scraper.new(new_char).scrape_topic
+      expect(new_char.real_name).to eq(nil)
     end
   end
 
   describe '#description_scrape' do
     it "returns the correctly formatted string for teams" do
-      scraper = Marvel101::Scraper.new("fixtures/avengers.html")
-      doc = Nokogiri::HTML(open("fixtures/avengers.html"))
-      result = scraper.description_scrape(doc)
+      scraper = Marvel101::Scraper.new("")
+      scraper.doc = Nokogiri::HTML(open("fixtures/avengers.html"))
+      result = scraper.description_scrape
       description = "Earth's Mightiest Heroes joined forces to take on threats that were too big for any one hero to tackle. With a roster that has included Captain America, Iron Man, Ant-Man, Hulk, Thor, Wasp and dozens more over the years, the Avengers have come to be regarded as Earth's No. 1 team."
       expect(result).to eq(description)
     end
 
     it "returns the correctly formatted string for characters" do
-      scraper = Marvel101::Scraper.new("fixtures/thor.html")
-      doc = Nokogiri::HTML(open("fixtures/thor.html"))
-      result = scraper.description_scrape(doc)
+      scraper = Marvel101::Scraper.new("")
+      scraper.doc = Nokogiri::HTML(open("fixtures/thor.html"))
+      result = scraper.description_scrape
       description = "As the Norse God of thunder and lightning, Thor wields one of the greatest weapons ever made, the enchanted hammer Mjolnir. While others have described Thor as an over-muscled, oafish imbecile, he's quite smart and compassionate.  He's self-assured, and he would never, ever stop fighting for a worthwhile cause."
       expect(result).to eq(description)
     end
