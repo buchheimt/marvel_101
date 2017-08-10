@@ -7,7 +7,6 @@ module Memorable
       self.url = url
       self.class.all << self
     end
-
   end
 
   module ClassMethods
@@ -18,5 +17,4 @@ module Memorable
     end
 
   end
-
 end

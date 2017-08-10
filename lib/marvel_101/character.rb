@@ -12,7 +12,8 @@ class Marvel101::Character
 
   def initialize(name, url)
     @scraped = false
-    @details = [:real_name, :description, :height, :weight, :powers, :abilities, :group_affiliations, :first_appearance, :origin, :url, :url_101, :url_wiki]
+    @details = [:real_name, :description, :height, :weight, :powers, :abilities,
+                :group_affiliations, :first_appearance, :origin, :url, :url_101, :url_wiki]
     super
   end
 
@@ -34,5 +35,4 @@ class Marvel101::Character
   def self.all
     @@all
   end
-
 end

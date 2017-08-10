@@ -13,10 +13,11 @@ class Marvel101::Scraper
     else
       item_cards = doc.css("section#featured-chars div.row-item")
     end
+
     item_cards.css("div.row-item-text > h5 > a").collect do |link|
       name = link.text.strip
       url = link.attr("href")
-      if @url.include?("team")
+      if @url.downcase.include?("team")
         Marvel101::Team.find_or_create_by_name(name, "http:#{url}")
       else
         Marvel101::Character.find_or_create_by_name(name, "http:#{url}")
@@ -74,10 +75,9 @@ class Marvel101::Scraper
   end
 
   def description_scrape(doc)
-    raw_description = doc.css("div.featured-item-desc p:nth-child(2)")
-    if raw_description && raw_description.text.strip != ""
-        desc_value = raw_description.text.gsub(/\n\s*[ml][oe][rs][es]/," ").gsub(/\n\s*/," ").strip
+    info = doc.css("div.featured-item-desc p:nth-child(2)")
+    if info && info.text.strip != ""
+      info.text.gsub(/\n\s*([ml][oe][rs][es])?/," ").strip
     end
   end
-
 end

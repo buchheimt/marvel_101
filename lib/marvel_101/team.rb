@@ -40,5 +40,4 @@ class Marvel101::Team
   def self.all
     @@all
   end
-
 end

@@ -22,5 +22,4 @@ class Marvel101::List
   def self.all
     @@all
   end
-
 end
