@@ -18,9 +18,9 @@ RSpec.describe "Marvel101::Character" do
       expect(new_char.scraped).to eq(false)
     end
 
-    it "Initializes with a details array of symbols"  do
+    it "Initializes with a details Constant of symbols"  do
       new_char = Marvel101::Character.new("Thor", "fixtures/thor.html")
-      expect(new_char.details[0]).to eq(:real_name)
+      expect(Marvel101::Character::DETAILS[0]).to eq(:real_name)
     end
 
     it "Adds self to @@all upon initialization"  do
@@ -88,5 +88,4 @@ RSpec.describe "Marvel101::Character" do
       expect(Marvel101::Character.all.size).to eq(pre_count + 1)
     end
   end
-
 end

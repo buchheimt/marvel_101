@@ -59,5 +59,4 @@ RSpec.describe "Marvel101::List" do
       expect(Marvel101::List.all.size).to eq(pre_count + 1)
     end
   end
-
 end

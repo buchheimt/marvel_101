@@ -5,13 +5,10 @@ class Marvel101::Team < Marvel101::Topic
   attr_accessor :list, :members, :details, :description,
                 :url_101, :url_wiki
 
-  def initialize(name, url)
-    @details = [:description, :url, :url_101, :url_wiki]
-    super
-  end
+  DETAILS = [:description, :url, :url_101, :url_wiki]
 
   def display
-    details.each do |detail|
+    DETAILS.each do |detail|
       puts "#{detail.to_s.split("_").join(" ").capitalize}: #{self.send("#{detail}")}" if self.send("#{detail}")
     end
     puts "Core Members:" if members.size > 0

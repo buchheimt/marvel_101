@@ -18,9 +18,9 @@ RSpec.describe "Marvel101::Team" do
       expect(new_team.scraped).to eq(false)
     end
 
-    it "Initializes with a details array of symbols"  do
+    it "Initializes with a details Constant of symbols"  do
       new_team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
-      expect(new_team.details[0]).to eq(:description)
+      expect(Marvel101::Team::DETAILS[0]).to eq(:description)
     end
 
     it "Adds self to @@all upon initialization"  do
@@ -101,5 +101,4 @@ RSpec.describe "Marvel101::Team" do
       expect(Marvel101::Team.all.size).to eq(pre_count + 1)
     end
   end
-
 end

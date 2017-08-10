@@ -160,7 +160,5 @@ RSpec.describe "Marvel101::Scraper" do
       description = "As the Norse God of thunder and lightning, Thor wields one of the greatest weapons ever made, the enchanted hammer Mjolnir. While others have described Thor as an over-muscled, oafish imbecile, he's quite smart and compassionate.  He's self-assured, and he would never, ever stop fighting for a worthwhile cause."
       expect(result).to eq(description)
     end
-
   end
-
 end
