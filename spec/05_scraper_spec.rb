@@ -33,17 +33,17 @@ RSpec.describe "Marvel101::Scraper" do
     end
   end
 
-  describe '#scrape_team' do
-    it "retrieves a description if applicable" do
+  describe '#scrape_topic' do
+    it "retrieves a description for a team if applicable" do
       scraper = Marvel101::Scraper.new("fixtures/avengers.html")
-      info = scraper.scrape_team
+      team = Marvel101::Team.new("Avengers", "fixtures/avengers.html")
       description = "Earth's Mightiest Heroes joined forces to take on threats that were too big for any one hero to tackle. With a roster that has included Captain America, Iron Man, Ant-Man, Hulk, Thor, Wasp and dozens more over the years, the Avengers have come to be regarded as Earth's No. 1 team."
-      expect(info[:description]).to eq(description)
+      expect(team.description).to eq(description)
     end
 
-    it "handles no description" do
+    it "handles no description for a team" do
       scraper = Marvel101::Scraper.new("fixtures/defenders.html")
-      info = scraper.scrape_team
+      team = Marvel101::Team.new("Defenders", "fixtures/avengers.html")
       expect(info.include?(:description)).to eq(false)
     end
 

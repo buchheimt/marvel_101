@@ -9,7 +9,8 @@ class Marvel101::List
   @@all = []
 
   def initialize(name, url)
-    @topics = Marvel101::Scraper.new(url).scrape_list
+    @url = url
+    @topics = Marvel101::Scraper.new(self).scrape_list
     @topics.each {|topic| topic.list = self}
     @scraped = true
     super

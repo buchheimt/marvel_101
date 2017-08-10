@@ -18,8 +18,7 @@ class Marvel101::Character
   end
 
   def get_info
-    attributes = Marvel101::Scraper.new(@url).scrape_character
-    attributes.each {|key, value| self.send("#{key}=", value)}
+    Marvel101::Scraper.new(self).scrape_topic
     @scraped = true
   end
 

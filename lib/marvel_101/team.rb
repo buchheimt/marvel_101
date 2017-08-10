@@ -16,14 +16,7 @@ class Marvel101::Team
   end
 
   def get_info
-    attributes = Marvel101::Scraper.new(@url).scrape_team
-    attributes.each {|key, value| self.send("#{key}=", value)}
-    if members
-      members.each do |member|
-        member.list = list;
-        member.team = self
-      end
-    end
+    Marvel101::Scraper.new(self).scrape_topic
     @scraped = true
   end
 
