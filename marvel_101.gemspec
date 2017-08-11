@@ -9,28 +9,26 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Tyler Buchheim"]
   spec.email         = ["tbuchhei@alumni.nd.edu"]
 
-  spec.summary       = "A CLI that scrapes marvel.com for info on popular Marvel characters and teams."
+  spec.summary       = "Marvel.com scraper CLI"
   spec.description   = "A CLI that scrapes marvel.com for info on popular Marvel characters and teams."
   spec.homepage      = "https://github.com/buchheimt/marvel_101"
   spec.license       = "MIT"
   spec.executables  << "marvel_101"
 
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
-  else
-    raise "RubyGems 2.0 or newer is required to protect against " \
-      "public gem pushes."
-  end
-
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
   end
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.bindir        = "bin"
+  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  gem 'nokogiri', "~> 1.8"
+  gem 'pry', "~> 0.10"
+  gem 'launchy', "~> 2.4"
+
+  spec.add_dependency 'nokogiri', "~> 1.8"
+  spec.add_dependency 'pry', "~> 0.10"
+  spec.add_dependency 'launchy', "~> 2.4"
   spec.add_development_dependency "bundler", "~> 1.15"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
