@@ -18,7 +18,6 @@ class Marvel101::Character < Marvel101::Topic
     DETAIL_ORDER.each do |type|
       title = type.to_s.split("_").join(" ").upcase
       puts "#{title}: #{details[type]}" if details.include?(type)
-      puts "" if details.include?(type) && details[type].size > 80
     end
   end
 
@@ -29,5 +28,9 @@ class Marvel101::Character < Marvel101::Topic
 
   def no_info?
     !description && details.empty? && urls.size <= 1
+  end
+
+  def valid_input?(input)
+    false
   end
 end

@@ -19,8 +19,8 @@ class Marvel101::CLI
     display_main
     input = gets.chomp.downcase
     output = valid_input?(input.to_i, STARTING_PAGES)
-    if output
-      name, url = output
+    if input.to_i.between?(1, STARTING_PAGES.size)
+      name, url = STARTING_PAGES[input.to_i - 1]
       topic_menu(Marvel101::List.find_or_create_by_name(name, SOURCE + url))
     elsif input == "exit" || input == "e"
       exit_message
@@ -53,9 +53,9 @@ class Marvel101::CLI
     when "l", "list"
       topic.list? ? error_message(topic) : topic_menu(topic.list)
     when "t", "team"
-      topic.char? && topic.team ? topic_menu(topic.team) : error_message(topic)
+      topic.has_team? ? topic_menu(topic.team) : error_message(topic)
     else
-      output = valid_input?(input.to_i, topic)
+      output = valid_input?(input.to_i)
       output ? topic_menu(output) : error_message(topic)
     end
   end
@@ -88,15 +88,5 @@ class Marvel101::CLI
     puts "You can enter (M)ain to go back to the main menu or (E)xit to... exit"
     puts "Type (L)ist to return to #{topic.list.name} menu" if !topic.list?
     puts "Type (T)eam to return to #{topic.team.name} menu" if topic.has_team?
-  end
-
-  def valid_input?(input, topic)
-    if topic.is_a?(Array)
-      topic[input - 1] if input.between?(1, topic.size)
-    elsif topic.list?
-      topic.items[input - 1] if input.between?(1, topic.items.size)
-    elsif topic.team?
-      topic.members[input - 1] if input.between?(1, topic.members.size)
-    end
   end
 end

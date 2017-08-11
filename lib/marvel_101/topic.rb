@@ -23,8 +23,10 @@ class Marvel101::Topic
 
   def display_links
     puts "" if urls.size > 1
-    puts "Marvel Wiki page available! Type 'wiki' to open in browser" if urls.include?(:url_wiki)
-    puts "Marvel 101 video available! Type '101' to open in browser" if urls.include?(:url_101)
+    ["wiki", "101"].each do |url|
+      output = "Marvel #{url} page available! Type '#{url}' to open in browser"
+      puts output if urls.include?("url_#{url}".to_sym)
+    end
   end
 
   def takes_input?
