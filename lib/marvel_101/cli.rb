@@ -18,7 +18,6 @@ class Marvel101::CLI
   def main_menu
     display_main
     input = gets.chomp.downcase
-    output = valid_input?(input.to_i, STARTING_PAGES)
     if input.to_i.between?(1, STARTING_PAGES.size)
       name, url = STARTING_PAGES[input.to_i - 1]
       topic_menu(Marvel101::List.find_or_create_by_name(name, SOURCE + url))
@@ -55,7 +54,7 @@ class Marvel101::CLI
     when "t", "team"
       topic.has_team? ? topic_menu(topic.team) : error_message(topic)
     else
-      output = valid_input?(input.to_i)
+      output = topic.valid_input?(input.to_i)
       output ? topic_menu(output) : error_message(topic)
     end
   end
