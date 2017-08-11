@@ -28,7 +28,11 @@ class Marvel101::Topic
   end
 
   def takes_input?
-    topic.list? || (topic.team? && !topic.members.empty?)
+    list? || (team? && !members.empty?)
+  end
+
+  def has_team?
+    char? && team
   end
 
   def list?

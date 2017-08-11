@@ -30,8 +30,4 @@ class Marvel101::Character < Marvel101::Topic
   def no_info?
     !description && details.empty? && urls.size <= 1
   end
-
-  def has_team?
-    topic.char? && topic.team
-  end
 end
