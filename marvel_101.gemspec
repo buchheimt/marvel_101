@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
   gem 'pry', "~> 0.10"
   gem 'launchy', "~> 2.4"
 
+  spec.add_dependency 'bundler', "~> 1.15"
   spec.add_dependency 'nokogiri', "~> 1.8"
   spec.add_dependency 'pry', "~> 0.10"
   spec.add_dependency 'launchy', "~> 2.4"
