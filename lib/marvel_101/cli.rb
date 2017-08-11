@@ -55,10 +55,10 @@ class Marvel101::CLI
   end
 
   def display_topic(topic)
-    break_len = 25
+    break_len = (80 - topic.name.size) / 2
     puts "\n" + "-" * break_len + "#{topic.name}" + "-" * break_len
     topic.display
-    puts "-" * break_len + "-" * "#{topic.name}".size + "-" * break_len
+    puts "-" * (break_len * 2 + topic.name.size)
     options_message(topic)
   end
 
