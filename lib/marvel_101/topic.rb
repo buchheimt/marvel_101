@@ -24,7 +24,7 @@ class Marvel101::Topic
   def display_links
     puts "" if urls.size > 1
     ["wiki", "101"].each do |url|
-      output = "Marvel #{url} page available! Type '#{url}' to open in browser"
+      output = "Marvel #{url} available! Type '#{url}' to open in browser"
       puts output if urls.include?("url_#{url}".to_sym)
     end
   end
