@@ -11,7 +11,7 @@ class Marvel101::CLI
   ]
 
   def call
-    puts "Welcome to Marvel 101!"
+    puts "\nWelcome to Marvel 101!"
     main_menu
   end
 
@@ -24,15 +24,8 @@ class Marvel101::CLI
     elsif input == "exit" || input == "e"
       exit_message
     else
-      error_message("main")
+      error("main")
     end
-  end
-
-  def display_main
-    puts "\nHere are your primary options:"
-    STARTING_PAGES.each.with_index(1) {|page, idx| puts "#{idx}. #{page[0]}!"}
-    puts "You can also enter (E)xit to... exit"
-    puts "Select a number from the options above and we'll get started!"
   end
 
   def topic_menu(topic)
@@ -40,44 +33,42 @@ class Marvel101::CLI
     display_topic(topic)
     input = gets.chomp.downcase
     case input
-    when "101", "wiki"
-      link = "url_#{input}".to_sym
-      open_link(topic.urls["url_#{input}".to_sym]) if topic.urls.include?(link)
-      topic_menu(topic)
-    when "source"
-      open_link(topic.urls[:url])
-      topic_menu(topic)
-    when "e", "exit" then exit_message
-    when "m", "main" then main_menu
-    when "l", "list"
-      topic.list? ? error_message(topic) : topic_menu(topic.list)
-    when "t", "team"
-      topic.has_team? ? topic_menu(topic.team) : error_message(topic)
+    when "101","wiki" then open_link("url_#{input}".to_sym, topic)
+    when "source" then open_link(:url, topic)
+    when "e","exit" then exit_message
+    when "m","main" then main_menu
+    when "l","list" then topic.list? ? error(topic) : topic_menu(topic.list)
+    when "t","team" then topic.has_team? ? topic_menu(topic.team) : error(topic)
     else
       output = topic.valid_input?(input.to_i)
-      output ? topic_menu(output) : error_message(topic)
+      output ? topic_menu(output) : error(topic)
     end
+  end
+
+  def display_main
+    puts "\n" + "-" * 80
+    puts "Here are your primary options:"
+    STARTING_PAGES.each.with_index(1) {|page, idx| puts "#{idx}. #{page[0]}!"}
+    puts "-" * 80
+    puts "You can also enter (E)xit to... exit"
+    puts "Select a number from the options above and we'll get started!"
   end
 
   def display_topic(topic)
     break_len = 25
-    puts "\n-" * break_len + "#{topic.name}" + "-" * break_len
+    puts "\n" + "-" * break_len + "#{topic.name}" + "-" * break_len
     topic.display
     puts "-" * break_len + "-" * "#{topic.name}".size + "-" * break_len
     options_message(topic)
   end
 
-  def open_link(url)
-    Launchy.open(url)
+  def open_link(url, topic)
+    Launchy.open(topic.urls[url]) if topic.urls.include?(url)
+    topic_menu(topic)
   end
 
   def exit_message
     puts "\nOh ok, well have a super day!"
-  end
-
-  def error_message(subject)
-    puts "\nSorry, that wasn't a valid option. Let's try again."
-    subject == "main" ? main_menu : topic_menu(subject)
   end
 
   def options_message(topic)
@@ -85,5 +76,10 @@ class Marvel101::CLI
     puts "You can enter (M)ain to go back to the main menu or (E)xit to... exit"
     puts "Type (L)ist to return to #{topic.list.name} menu" if !topic.list?
     puts "Type (T)eam to return to #{topic.team.name} menu" if topic.has_team?
+  end
+
+  def error(subject)
+    puts "\nSorry, that wasn't a valid option. Let's try again."
+    subject == "main" ? main_menu : topic_menu(subject)
   end
 end

@@ -13,6 +13,7 @@ Gem::Specification.new do |spec|
   spec.description   = "A CLI that scrapes marvel.com for info on popular Marvel characters and teams."
   spec.homepage      = "https://github.com/buchheimt/marvel_101"
   spec.license       = "MIT"
+  spec.executables  << "marvel_101"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
