@@ -20,7 +20,9 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+This CLI is very user friendly, and should need little explanation. Follow menu instructions to explore Marvel heroes, villains, and teams to your heart's content. to run it simply enter ```marvel_101```
+
+Enjoy!
 
 ## Development
 
