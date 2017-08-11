@@ -47,7 +47,7 @@ class Marvel101::Scraper
   def get_description
     info = doc.css("div.featured-item-desc p:nth-child(2)").text
     unless info.strip.empty?
-      topic.description = info.gsub(/\n\s*([ml][oe][rs][es])?/," ").strip
+      topic.description = info.gsub(/\r\n\s*([ml][oe][rs][es])?/," ").strip
     end
   end
 
@@ -76,7 +76,7 @@ class Marvel101::Scraper
   def get_101
     url_101_text = doc.css("div#MarvelVideo101 script").text
     unless url_101_text.empty?
-      id = url_101_text.match(/videoId: .(-?\w*)./)[1]
+      id = url_101_text.match(/videoId: .([-\w]*)./)[1]
       topic.urls[:url_101] = "https://www.youtube.com/watch?v=#{id}"
     end
   end

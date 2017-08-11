@@ -61,9 +61,7 @@ class Marvel101::CLI
 
   def display_topic(topic)
     break_len = 25
-    puts "\nYou selected #{topic.name}, awesome!"
-    puts "Here is some more info about #{topic.name}."
-    puts "-" * break_len + "#{topic.name}" + "-" * break_len
+    puts "\n-" * break_len + "#{topic.name}" + "-" * break_len
     topic.display
     puts "-" * break_len + "-" * "#{topic.name}".size + "-" * break_len
     options_message(topic)
