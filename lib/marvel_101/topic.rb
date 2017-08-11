@@ -27,6 +27,10 @@ class Marvel101::Topic
     puts "Marvel 101 video available! Type '101' to open in browser" if urls.include?(:url_101)
   end
 
+  def takes_input?
+    topic.list? || (topic.team? && !topic.members.empty?)
+  end
+
   def list?
     self.is_a?(Marvel101::List)
   end

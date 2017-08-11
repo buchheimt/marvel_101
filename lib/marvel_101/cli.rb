@@ -1,11 +1,13 @@
 class Marvel101::CLI
 
+  SOURCE = "http://marvel.com/characters/"
+
   STARTING_PAGES = [
-    ["Popular Teams", "http://marvel.com/characters/list/997/titanic_teams"],
-    ["Popular Heroes", "http://marvel.com/characters/list/994/top_marvel_heroes"],
-    ["Popular Villains", "http://marvel.com/characters/list/995/bring_on_the_bad_guys"],
-    ["Featured Characters", "http://marvel.com/characters/browse"],
-    ["The Women of Marvel", "http://marvel.com/characters/list/996/women_of_marvel"]
+    ["Popular Teams", "list/997/titanic_teams"],
+    ["Popular Heroes", "list/994/top_marvel_heroes"],
+    ["Popular Villains", "list/995/bring_on_the_bad_guys"],
+    ["Featured Characters", "browse"],
+    ["The Women of Marvel", "list/996/women_of_marvel"]
   ]
 
   def call
@@ -19,7 +21,7 @@ class Marvel101::CLI
     output = valid_input?(input.to_i, STARTING_PAGES)
     if output
       name, url = output
-      topic_menu(Marvel101::List.find_or_create_by_name(name, url))
+      topic_menu(Marvel101::List.find_or_create_by_name(name, SOURCE + url))
     elsif input == "exit" || input == "e"
       exit_message
     else
@@ -29,7 +31,7 @@ class Marvel101::CLI
 
   def display_main
     puts "\nHere are your primary options:"
-    STARTING_PAGES.each.with_index(1) {|page, index| puts "#{index}. #{page[0]}!"}
+    STARTING_PAGES.each.with_index(1) {|page, idx| puts "#{idx}. #{page[0]}!"}
     puts "You can also enter (E)xit to... exit"
     puts "Select a number from the options above and we'll get started!"
   end
@@ -43,12 +45,13 @@ class Marvel101::CLI
       link = "url_#{input}".to_sym
       open_link(topic.urls["url_#{input}".to_sym]) if topic.urls.include?(link)
       topic_menu(topic)
-    when "show me"
+    when "source"
       open_link(topic.urls[:url])
       topic_menu(topic)
     when "e", "exit" then exit_message
     when "m", "main" then main_menu
-    when "l", "list" then topic.list? ? error_message(topic) : topic_menu(topic.list)
+    when "l", "list"
+      topic.list? ? error_message(topic) : topic_menu(topic.list)
     when "t", "team"
       topic.char? && topic.team ? topic_menu(topic.team) : error_message(topic)
     else
@@ -64,18 +67,7 @@ class Marvel101::CLI
     puts "-" * break_len + "#{topic.name}" + "-" * break_len
     topic.display
     puts "-" * break_len + "-" * "#{topic.name}".size + "-" * break_len
-
     options_message(topic)
-  end
-
-  def valid_input?(input, topic)
-    if topic.is_a?(Array)
-      topic[input - 1] if input.between?(1, topic.size)
-    elsif topic.list?
-      topic.items[input - 1] if input.between?(1, topic.items.size)
-    elsif topic.team?
-      topic.members[input - 1] if input.between?(1, topic.members.size)
-    end
   end
 
   def open_link(url)
@@ -92,9 +84,19 @@ class Marvel101::CLI
   end
 
   def options_message(topic)
-    puts "Select a number from the options above to learn more!" if topic.list? || (topic.team? && !topic.members.empty?)
+    puts "Enter an option number for more info!" if topic.takes_input?
     puts "You can enter (M)ain to go back to the main menu or (E)xit to... exit"
-    puts "you can also type (L)ist to return to the #{topic.list.name} menu" unless topic.list?
-    puts "you can also type (T)eam to return to the #{topic.team.name} menu" if topic.char? && topic.team
+    puts "Type (L)ist to return to #{topic.list.name} menu" if !topic.list?
+    puts "Type (T)eam to return to #{topic.team.name} menu" if topic.has_team?
+  end
+
+  def valid_input?(input, topic)
+    if topic.is_a?(Array)
+      topic[input - 1] if input.between?(1, topic.size)
+    elsif topic.list?
+      topic.items[input - 1] if input.between?(1, topic.items.size)
+    elsif topic.team?
+      topic.members[input - 1] if input.between?(1, topic.members.size)
+    end
   end
 end

@@ -31,11 +31,15 @@ class Marvel101::Scraper
 
   def get_items(item_cards)
     topic.items = item_cards.css("div.row-item-text > h5 > a").collect do |link|
-      name, url = link.text.strip, link.attr("href")
+      name, url = link.text.strip, "http:#{link.attr("href")}"
       if @url.downcase.include?("team")
-        Marvel101::Team.find_or_create_by_name("The #{name}", "http:#{url}").tap {|team| team.list = topic}
+        Marvel101::Team.find_or_create_by_name("The #{name}", url).tap do |team|
+          team.list = topic
+        end
       else
-        Marvel101::Character.find_or_create_by_name(name, "http:#{url}").tap {|char| char.list = topic}
+        Marvel101::Character.find_or_create_by_name(name, url).tap do |char|
+          char.list = topic
+        end
       end
     end
   end

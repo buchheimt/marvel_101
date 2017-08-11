@@ -12,6 +12,6 @@ class Marvel101::Team < Marvel101::Topic
 
   def display_members
     puts "CORE MEMBERS:" unless members.empty?
-    members.each.with_index(1) {|member, index| puts "    #{index}. #{member.name}"}
+    members.each.with_index(1) {|member, idx| puts "    #{idx}. #{member.name}"}
   end
 end
