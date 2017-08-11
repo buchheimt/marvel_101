@@ -11,7 +11,7 @@ class Marvel101::Character < Marvel101::Topic
     display_description
     display_details
     display_links
-    display_empty_message if empty?
+    display_empty_message if no_info?
   end
 
   def display_details
@@ -26,7 +26,7 @@ class Marvel101::Character < Marvel101::Topic
     puts "Type 'show me' to open the page in browser, but don't get your hopes up"
   end
 
-  def empty?
-    !description && details.size <= 0 && urls.size <= 1
+  def no_info?
+    !description && details.empty? && urls.size <= 1
   end
 end

@@ -26,7 +26,7 @@ class Marvel101::Scraper
 
   def get_item_cards
     item_cards = doc.css("div#comicsListing div.row-item")
-    item_cards.size > 0 ? item_cards : doc.css("section#featured-chars div.row-item")
+    item_cards.empty? ? doc.css("#featured-chars div.row-item") : item_cards
   end
 
   def get_items(item_cards)
@@ -41,9 +41,9 @@ class Marvel101::Scraper
   end
 
   def get_description
-    info = doc.css("div.featured-item-desc p:nth-child(2)")
-    if info.text.strip != ""
-      topic.description = info.text.gsub(/\n\s*([ml][oe][rs][es])?/," ").strip
+    info = doc.css("div.featured-item-desc p:nth-child(2)").text
+    unless info.strip.empty?
+      topic.description = info.gsub(/\n\s*([ml][oe][rs][es])?/," ").strip
     end
   end
 
@@ -62,22 +62,23 @@ class Marvel101::Scraper
     topic.details = {}
     raw_details = doc.css("div.featured-item-meta")
     raw_details.css("div div").each do |raw_detail|
-      detail = raw_detail.css("strong").text.downcase.strip.split(" ").join("_").to_sym
+      detail = raw_detail.css("strong").text.downcase.strip.split(" ").join("_")
       info = raw_detail.css("p:last-child span").text.strip
-      info != "" ? info : info = raw_detail.css("p:last-child").text
+      info.empty? ? info = raw_detail.css("p:last-child").text : info
       topic.details[detail.to_sym] = info
     end
   end
 
   def get_101
     url_101_text = doc.css("div#MarvelVideo101 script").text
-    if url_101_text != ""
-      topic.urls[:url_101] = "https://www.youtube.com/watch?v=#{url_101_text.match(/videoId: .(-?\w*)./)[1]}"
+    unless url_101_text.empty?
+      id = url_101_text.match(/videoId: .(-?\w*)./)[1]
+      topic.urls[:url_101] = "https://www.youtube.com/watch?v=#{id}"
     end
   end
 
   def get_wiki
     wiki_link = doc.css("div.title-section a.featured-item-notice.primary")
-    topic.urls[:url_wiki] = wiki_link.attr("href").value if wiki_link.size > 0
+    topic.urls[:url_wiki] = wiki_link.attr("href").value unless wiki_link.empty?
   end
 end

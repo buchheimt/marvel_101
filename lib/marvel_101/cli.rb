@@ -64,7 +64,7 @@ class Marvel101::CLI
     puts "-" * break_len + "#{topic.name}" + "-" * break_len
     topic.display
     puts "-" * break_len + "-" * "#{topic.name}".size + "-" * break_len
-    puts "Select a number from the options above to learn more!" unless topic.char?
+
     options_message(topic)
   end
 
@@ -92,6 +92,7 @@ class Marvel101::CLI
   end
 
   def options_message(topic)
+    puts "Select a number from the options above to learn more!" if topic.list? || (topic.team? && !topic.members.empty?)
     puts "You can enter (M)ain to go back to the main menu or (E)xit to... exit"
     puts "you can also type (L)ist to return to the #{topic.list.name} menu" unless topic.list?
     puts "you can also type (T)eam to return to the #{topic.team.name} menu" if topic.char? && topic.team
