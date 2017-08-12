@@ -32,7 +32,7 @@ class Marvel101::CLI
   def topic_menu(topic)
     topic.get_info unless topic.scraped
     display_topic(topic)
-    print ">>"
+    print ">> "
     input = gets.chomp.downcase
     case input
     when "101","wiki" then open_link("url_#{input}".to_sym, topic)
