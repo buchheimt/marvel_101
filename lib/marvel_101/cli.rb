@@ -17,6 +17,7 @@ class Marvel101::CLI
 
   def main_menu
     display_main
+    print ">>"
     input = gets.chomp.downcase
     if input.to_i.between?(1, STARTING_PAGES.size)
       name, url = STARTING_PAGES[input.to_i - 1]
@@ -31,6 +32,7 @@ class Marvel101::CLI
   def topic_menu(topic)
     topic.get_info unless topic.scraped
     display_topic(topic)
+    print ">>"
     input = gets.chomp.downcase
     case input
     when "101","wiki" then open_link("url_#{input}".to_sym, topic)
