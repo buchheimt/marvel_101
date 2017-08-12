@@ -17,7 +17,7 @@ class Marvel101::CLI
 
   def main_menu
     display_main
-    print ">>"
+    print ">> "
     input = gets.chomp.downcase
     if input.to_i.between?(1, STARTING_PAGES.size)
       name, url = STARTING_PAGES[input.to_i - 1]
