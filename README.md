@@ -1,6 +1,11 @@
-# Marvel101
+# marvel_101
 
 A CLI that scrapes marvel.com for info on popular Marvel characters and teams.
+
+50+ characters included with quick access to info and open-in-browser wiki links
+and 101 videos. This gem will update dynamically as Marvel adds/updates content!
+
+This is my first published gem, feedback and constructive criticism is welcome!
 
 ## Installation
 
