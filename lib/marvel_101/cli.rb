@@ -19,6 +19,7 @@ class Marvel101::CLI
     display_main
     print ">> "
     input = gets.chomp.downcase
+
     if input.to_i.between?(1, STARTING_PAGES.size)
       name, url = STARTING_PAGES[input.to_i - 1]
       topic_menu(Marvel101::List.find_or_create_by_name(name, SOURCE + url))
@@ -34,6 +35,7 @@ class Marvel101::CLI
     display_topic(topic)
     print ">> "
     input = gets.chomp.downcase
+
     case input
     when "101","wiki" then open_link("url_#{input}".to_sym, topic)
     when "source" then open_link(:url, topic)
@@ -57,10 +59,10 @@ class Marvel101::CLI
   end
 
   def display_topic(topic)
-    break_len = (80 - topic.name.size) / 2
-    puts "\n" + "-" * break_len + "#{topic.name}" + "-" * break_len
+    break_len = (80 - topic.name.size) / 2.0
+    puts "\n" + "-" * break_len.floor + "#{topic.name}" + "-" * break_len.ceil
     topic.display
-    puts "-" * (break_len * 2 + topic.name.size)
+    puts "-" * 80
     options_message(topic)
   end
 
@@ -80,8 +82,8 @@ class Marvel101::CLI
     puts "Type (T)eam to return to #{topic.team.name} menu" if topic.has_team?
   end
 
-  def error(subject)
+  def error(topic)
     puts "\nSorry, that wasn't a valid option. Let's try again."
-    subject == "main" ? main_menu : topic_menu(subject)
+    topic == "main" ? main_menu : topic_menu(topic)
   end
 end
