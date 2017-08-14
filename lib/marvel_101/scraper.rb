@@ -47,7 +47,8 @@ class Marvel101::Scraper
   def get_description
     info = doc.css("div.featured-item-desc p:nth-child(2)").text
     unless info.strip.empty?
-      topic.description = info.gsub(/\r?\n\s*([ml][oe][rs][es])?/," ").strip
+      info = info.gsub(/\r?\n\s*([ml][oe][rs][es])?/," ").strip
+      topic.description = info.gsub("â", "\'").gsub("Â", "")
     end
   end
 
@@ -69,7 +70,7 @@ class Marvel101::Scraper
       detail = raw_detail.css("strong").text.downcase.strip.split(" ").join("_")
       info = raw_detail.css("p:last-child span").text.strip
       info = raw_detail.css("p:last-child").text if info.empty?
-      topic.details[detail.to_sym] = info
+      topic.details[detail.to_sym] = info.gsub("â", "\'").gsub("Â", "")
     end
   end
 

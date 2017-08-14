@@ -16,8 +16,11 @@ class Marvel101::Character < Marvel101::Topic
 
   def display_details
     DETAIL_ORDER.each do |type|
-      title = type.to_s.split("_").join(" ").upcase
-      puts "#{title}: #{details[type]}" if details.include?(type)
+      if details.include?(type)
+        title = type.to_s.split("_").join(" ").upcase
+        format_output("#{title}: #{details[type]}")
+        puts "" if "#{title}: #{details[type]}".size > 60
+      end
     end
   end
 

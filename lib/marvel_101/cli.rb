@@ -10,6 +10,8 @@ class Marvel101::CLI
     ["The Women of Marvel", "list/996/women_of_marvel"]
   ]
 
+  LINE_LEN = 80
+
   def call
     puts "\nWelcome to Marvel 101!"
     main_menu
@@ -50,19 +52,19 @@ class Marvel101::CLI
   end
 
   def display_main
-    puts "\n" + "-" * 80
+    puts "\n" + "-" * LINE_LEN
     puts "Here are your primary options:"
     STARTING_PAGES.each.with_index(1) {|page, idx| puts "#{idx}. #{page[0]}!"}
-    puts "-" * 80
+    puts "-" * LINE_LEN
     puts "You can also enter (E)xit to... exit"
     puts "Select a number from the options above and we'll get started!"
   end
 
   def display_topic(topic)
-    break_len = (80 - topic.name.size) / 2.0
+    break_len = (LINE_LEN - topic.name.size) / 2.0
     puts "\n" + "-" * break_len.floor + "#{topic.name}" + "-" * break_len.ceil
     topic.display
-    puts "-" * 80
+    puts "-" * LINE_LEN
     options_message(topic)
   end
 
